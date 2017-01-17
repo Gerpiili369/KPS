@@ -4,7 +4,7 @@
         <title>Kivi, paperi, sakset!</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
         <script>
             var voitot=0;
             var häviöt=0;
@@ -63,13 +63,18 @@
     </head>
     <body>
         <header class="navbar navbar-inverse">
-            <div>Valitse</div>
             <div>
                 <button name="Kivi" onclick="KPS('kivi');">KIVI</button>tai
                 <button name="Kivi" onclick="KPS('paperi');">PAPERI</button>tai
                 <button name="Kivi" onclick="KPS('sakset');">SAKSET</button>
             </div>
         </header>
+        <div>Valitse</div>
+        <div>
+            <button name="Kivi" onclick="KPS('kivi');">KIVI</button>tai
+            <button name="Kivi" onclick="KPS('paperi');">PAPERI</button>tai
+            <button name="Kivi" onclick="KPS('sakset');">SAKSET</button>
+        </div>
         <figure>
             <img src="blank.png" id="pelaajankuva" alt="pelaaja" height="100" title="Pelaaja"/>
             <img src="blank.png" id="tietokoneenkuva" alt="tietokone" height="100" title="Tietokone"/>
