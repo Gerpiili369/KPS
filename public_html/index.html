@@ -9,10 +9,10 @@
     </head>
     <body>
         <div>Valitse</div>
-        <div>
-            <button name="Kivi" onclick="KPS('kivi');">KIVI</button>tai
-            <button name="Kivi" onclick="KPS('paperi');">PAPERI</button>tai
-            <button name="Kivi" onclick="KPS('sakset');">SAKSET</button>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-default" name="Kivi" onclick="KPS('kivi');">KIVI</button>tai
+            <button type="button" class="btn btn-default" onclick="KPS('paperi');">PAPERI</button>tai
+            <button type="button" class="btn btn-default" onclick="KPS('sakset');">SAKSET</button>
         </div>
         <figure>
             <img src="blank.png" id="pelaajankuva" alt="pelaaja" height="100" title="Pelaaja"/>
