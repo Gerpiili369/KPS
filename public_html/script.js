@@ -2,14 +2,17 @@ var voitot=0;
 var häviöt=0;
 var tasapelit=0;
 var pelit=0;
+var tulos="";
 
 function KPS(pelaaja) {
-    document.getElementById("tulos").innerHTML=päättäjä(pelaaja);
+    tulos=päättäjä(pelaaja);
     pelit+=1;
             
-    if (document.getElementById("tulos").innerHTML==='VOITTO') {voitot+=1;}
-    if (document.getElementById("tulos").innerHTML==='HÄVIÖ') {häviöt+=1;}
-    if (document.getElementById("tulos").innerHTML==='TASAPELI') {tasapelit+=1;}
+    if (tulos==='win') {voitot+=1;}
+    if (tulos==='defeat') {häviöt+=1;}
+    if (tulos==='draw') {tasapelit+=1;}
+    
+    document.getElementById("tulos").src="img/"+tulos+'.png';
     
     document.getElementById("winBad").innerHTML=voitot;
     document.getElementById("drawBad").innerHTML=tasapelit;
@@ -22,41 +25,40 @@ function KPS(pelaaja) {
 function päättäjä(pelaaja) {
     var vaihtoehdot=['kivi','paperi','sakset'];
     var tietokone=vaihtoehdot[Math.floor(Math.random()*vaihtoehdot.length)];
-    document.getElementById("tietokone").innerHTML=tietokone;
-    document.getElementById("pelaajankuva").src=pelaaja+'.jpg';
-    document.getElementById("tietokoneenkuva").src=tietokone+'.jpg';
+    document.getElementById("pelaajankuva").src="img/"+pelaaja+'.jpg';
+    document.getElementById("tietokoneenkuva").src="img/"+tietokone+'.jpg';
                 
     if (pelaaja==='kivi') {
         if (tietokone==='kivi') {
-            return 'TASAPELI';
+            return 'draw';
         }
         else if (tietokone==='paperi') {
-            return 'HÄVIÖ';
+            return 'defeat';
         }
         else {
-            return 'VOITTO';
+            return 'win';
         }
     }
     else if (pelaaja==='paperi') {
         if (tietokone==='kivi') {
-            return 'VOITTO';
+            return 'win';
         }
         else if (tietokone==='paperi') {
-            return 'TASAPELI';
+            return 'draw';
         }
         else {
-            return 'HÄVIÖ';
+            return 'defeat';
         }
     }
     else {
         if (tietokone==='kivi') {
-            return 'HÄVIÖ';
+            return 'defeat';
         }
         else if (tietokone==='paperi') {
-            return 'VOITTO';
+            return 'win';
         }
         else {
-            return 'TASAPELI';
+            return 'draw';
         }
     }    
 }
