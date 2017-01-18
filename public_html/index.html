@@ -8,28 +8,28 @@
         <script src="script.js"></script>
     </head>
     <body>
-        <div class="jumbotron">
+        <div class="">
             <h1>Valitse</h1>
             <div class="btn-group" role="group">
-               <button type="button" class="btn btn-default" name="Kivi" onclick="KPS('kivi');">KIVI</button>
-               <button type="button" class="btn btn-default" onclick="KPS('paperi');">PAPERI</button>
+                <button type="button" class="btn btn-default" name="Kivi" onclick="KPS('kivi');">KIVI</button>
+                <button type="button" class="btn btn-default" onclick="KPS('paperi');">PAPERI</button>
                 <button type="button" class="btn btn-default" onclick="KPS('sakset');">SAKSET</button>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-5 col-md-3">
+            <div class="col-xs-4 col-md-1">
                 <div class="thumbnail">
                     <img src="blank.png" id="pelaajankuva" alt="pelaaja" height="100" title="Pelaaja"/>
                     <div class="caption">
-                        <h3>Pelaajan valinta</h3>
+                        <h3>Pelaaja</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-5 col-md-3">
+            <div class="col-xs-4 col-md-1">
                 <div class="thumbnail">
                     <img src="blank.png" id="tietokoneenkuva" alt="tietokone" height="100" title="Tietokone"/>
                     <div class="caption">
-                        <h3>Tietokoneen valinta</h3>
+                        <h3>Tietokone</h3>
                     </div>
                 </div>
             </div>
@@ -38,9 +38,7 @@
             <pre id="tietokone">tietokoneen valinta tulee tähän</pre>
             <pre id="tulos">TULOS TULEE TÄHÄN</pre>
         </div>
-        <pre>
-            Voitot: <span class="badge" id="winBad">0</span> Häviöt: <span class="badge" id="lossBad">0</span> Tasapelit: <span class="badge" id="drawBad">0</span>
-        </pre>
+        <pre>Voitot: <span class="badge" id="winBad">0</span> Häviöt: <span class="badge" id="lossBad">0</span> Tasapelit: <span class="badge" id="drawBad">0</span></pre>
         <div class="progress">
             <div id="winBar" class="progress-bar progress-bar-success progress-bar-striped active" style=""></div>
             <div id="drawBar" class="progress-bar progress-bar-warning progress-bar-striped active" style=""></div>
