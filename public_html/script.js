@@ -11,7 +11,9 @@ function KPS(pelaaja) {
     if (document.getElementById("tulos").innerHTML==='HÄVIÖ') {häviöt+=1;}
     if (document.getElementById("tulos").innerHTML==='TASAPELI') {tasapelit+=1;}
     
-    document.getElementById("kirjanpito").innerHTML="Voitot: "+voitot+" Häviöt: "+häviöt+" Tasapelit: "+tasapelit;
+    document.getElementById("winBad").innerHTML=voitot;
+    document.getElementById("drawBad").innerHTML=tasapelit;
+    document.getElementById("lossBad").innerHTML=häviöt;
     document.getElementById("winBar").style="width: "+(voitot/pelit*100)+"%";
     document.getElementById("drawBar").style="width: "+(tasapelit/pelit*100)+"%";
     document.getElementById("lossBar").style="width: "+(häviöt/pelit*100)+"%";
