@@ -1,49 +1,52 @@
-var voitot=0;
-var häviöt=0;
-var tasapelit=0;
-var pelit=0;
-var tulos="";
+var wins=0;
+var losses=0;
+var draws=0;
+var games=0;
+var result="";
 
-function KPS(pelaaja) {
-    tulos=päättäjä(pelaaja);
-    pelit+=1;
+function KPS(player) {
+    result=decider(player);
+    games+=1;
             
-    if (tulos==='win') {voitot+=1;}
-    if (tulos==='defeat') {häviöt+=1;}
-    if (tulos==='draw') {tasapelit+=1;}
+    if (result==='win') {wins+=1;}
+    if (result==='defeat') {losses+=1;}
+    if (result==='draw') {draws+=1;}
     
-    document.getElementById("tulos").src="img/"+tulos+'.png';
+    document.getElementById("result").src="img/"+result+'.png';
+    document.getElementById("result").title=result;
     
-    document.getElementById("winBad").innerHTML=voitot;
-    document.getElementById("drawBad").innerHTML=tasapelit;
-    document.getElementById("lossBad").innerHTML=häviöt;
-    document.getElementById("winBar").style="width: "+(voitot/pelit*100)+"%";
-    document.getElementById("drawBar").style="width: "+(tasapelit/pelit*100)+"%";
-    document.getElementById("lossBar").style="width: "+(häviöt/pelit*100)+"%";
+    document.getElementById("winBad").innerHTML=wins;
+    document.getElementById("drawBad").innerHTML=draws;
+    document.getElementById("lossBad").innerHTML=losses;
+    document.getElementById("winBar").style="width: "+(wins/games*100)+"%";
+    document.getElementById("drawBar").style="width: "+(draws/games*100)+"%";
+    document.getElementById("lossBar").style="width: "+(losses/games*100)+"%";
 }
 
-function päättäjä(pelaaja) {
-    var vaihtoehdot=['kivi','paperi','sakset'];
-    var tietokone=vaihtoehdot[Math.floor(Math.random()*vaihtoehdot.length)];
-    document.getElementById("pelaajankuva").src="img/"+pelaaja+'.jpg';
-    document.getElementById("tietokoneenkuva").src="img/"+tietokone+'.jpg';
+function decider(player) {
+    var choices=['rock','paper','scissors'];
+    var computer=choices[Math.floor(Math.random()*choices.length)];
+    document.getElementById("playerpicture").src="img/"+player+'.jpg';
+    document.getElementById("playerpicture").title=player;
+    document.getElementById("computerpicture").src="img/"+computer+'.jpg';
+    document.getElementById("computerpicture").title=computer;
                 
-    if (pelaaja==='kivi') {
-        if (tietokone==='kivi') {
+    if (player==='rock') {
+        if (computer==='rock') {
             return 'draw';
         }
-        else if (tietokone==='paperi') {
+        else if (computer==='paper') {
             return 'defeat';
         }
         else {
             return 'win';
         }
     }
-    else if (pelaaja==='paperi') {
-        if (tietokone==='kivi') {
+    else if (player==='paper') {
+        if (computer==='rock') {
             return 'win';
         }
-        else if (tietokone==='paperi') {
+        else if (computer==='paper') {
             return 'draw';
         }
         else {
@@ -51,10 +54,10 @@ function päättäjä(pelaaja) {
         }
     }
     else {
-        if (tietokone==='kivi') {
+        if (computer==='rock') {
             return 'defeat';
         }
-        else if (tietokone==='paperi') {
+        else if (computer==='paper') {
             return 'win';
         }
         else {

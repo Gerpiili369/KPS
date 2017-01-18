@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Kivi, paperi, sakset!</title>
+        <title>Rock, paper, scissors!</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -9,19 +9,19 @@
     </head>
     <body>
         <div class="">
-            <h1>Valitse</h1>
+            <h1>Choose</h1>
             <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default" name="Kivi" onclick="KPS('kivi');">KIVI</button>
-                <button type="button" class="btn btn-default" onclick="KPS('paperi');">PAPERI</button>
-                <button type="button" class="btn btn-default" onclick="KPS('sakset');">SAKSET</button>
+                <button type="button" class="btn btn-default" name="Kivi" onclick="KPS('rock');">ROCK</button>
+                <button type="button" class="btn btn-default" onclick="KPS('paper');">PAPER</button>
+                <button type="button" class="btn btn-default" onclick="KPS('scissors');">SCISSORS</button>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-4 col-md-3">
                 <div class="thumbnail">
-                    <img src="blank.png" id="pelaajankuva" alt="pelaaja" height="100" title="Pelaaja"/>
+                    <img src="blank.png" id="playerpicture" alt="player" height="100" title="Player"/>
                     <div class="caption">
-                        <h3>Pelaaja</h3>
+                        <h3>Player</h3>
                     </div>
                 </div>
             </div>
@@ -32,19 +32,19 @@
             </div>
             <div class="col-xs-4 col-md-3">
                 <div class="thumbnail">
-                    <img src="blank.png" id="tietokoneenkuva" alt="tietokone" height="100" title="Tietokone"/>
+                    <img src="blank.png" id="computerpicture" alt="computer" height="100" title="Computer"/>
                     <div class="caption">
-                        <h3>Tietokone</h3>
+                        <h3>Computer</h3>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="thumbnail">
-                <img src="blank.png" id="tulos"></img>
+                <img src="blank.png" id="result" alt="result" title="result"/>
             </div>
         </div>
-        <pre>Voitot: <span class="badge" id="winBad">0</span> Häviöt: <span class="badge" id="lossBad">0</span> Tasapelit: <span class="badge" id="drawBad">0</span></pre>
+        <pre>Wins: <span class="badge" id="winBad">0</span> Losses: <span class="badge" id="lossBad">0</span> Draws: <span class="badge" id="drawBad">0</span></pre>
         <div class="progress">
             <div id="winBar" class="progress-bar progress-bar-success progress-bar-striped active" style=""></div>
             <div id="drawBar" class="progress-bar progress-bar-warning progress-bar-striped active" style=""></div>
