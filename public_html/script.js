@@ -30,6 +30,9 @@ function decider(player) {
     document.getElementById("playerpicture").title=player;
     document.getElementById("computerpicture").src="img/"+computer+'.jpg';
     document.getElementById("computerpicture").title=computer;
+    
+    document.getElementById("hideatstart1").hidden=false;
+    document.getElementById("hideatstart2").hidden=false;
                 
     if (player==='rock') {
         if (computer==='rock') {
