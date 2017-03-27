@@ -1,80 +1,56 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Kivi, paperi, sakset!</title>
+        <title>Rock, paper, scissors!</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script>
-            var voitot=0;
-            var häviöt=0;
-            var tasapelit=0;
-            
-            function KPS(pelaaja) {
-                document.getElementById("tulos").innerHTML=päättäjä(pelaaja);
-            
-                if (document.getElementById("tulos").innerHTML==='VOITTO') {voitot+=1;}
-                if (document.getElementById("tulos").innerHTML==='HÄVIÖ') {häviöt+=1;}
-                if (document.getElementById("tulos").innerHTML==='TASAPELI') {tasapelit+=1;}
-                document.getElementById("kirjanpito").innerHTML="Voitot: "+voitot+" Häviöt: "+häviöt+" Tasapelit: "+tasapelit;
-            }
-            function päättäjä(pelaaja) {
-                var vaihtoehdot=['kivi','paperi','sakset'];
-                var tietokone=vaihtoehdot[Math.floor(Math.random()*vaihtoehdot.length)];
-                document.getElementById("tietokone").innerHTML=tietokone;
-                document.getElementById("pelaajankuva").src=pelaaja+'.jpg';
-                document.getElementById("tietokoneenkuva").src=tietokone+'.jpg';
-                
-                if (pelaaja==='kivi') {
-                    if (tietokone==='kivi') {
-                        return 'TASAPELI';
-                    }
-                    else if (tietokone==='paperi') {
-                        return 'HÄVIÖ';
-                    }
-                    else {
-                        return 'VOITTO';
-                    }
-                }
-                else if (pelaaja==='paperi') {
-                    if (tietokone==='kivi') {
-                        return 'VOITTO';
-                    }
-                    else if (tietokone==='paperi') {
-                        return 'TASAPELI';
-                    }
-                    else {
-                        return 'HÄVIÖ';
-                    }
-                }
-                else {
-                    if (tietokone==='kivi') {
-                        return 'HÄVIÖ';
-                    }
-                    else if (tietokone==='paperi') {
-                        return 'VOITTO';
-                    }
-                    else {
-                        return 'TASAPELI';
-                    }
-                }    
-            }
-        </script>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="script.js"></script>
     </head>
     <body>
-        <div>Valitse</div>
-        <div>
-            <button name="Kivi" onclick="KPS('kivi');">KIVI</button>tai
-            <button name="Kivi" onclick="KPS('paperi');">PAPERI</button>tai
-            <button name="Kivi" onclick="KPS('sakset');">SAKSET</button>
+        <div class="">
+            <h1>Choose</h1>
+            <nav class="navbar navbar-fixed-top">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" name="Kivi" onclick="KPS('rock');">ROCK</button>
+                    <button type="button" class="btn btn-default" onclick="KPS('paper');">PAPER</button>
+                    <button type="button" class="btn btn-default" onclick="KPS('scissors');">SCISSORS</button>
+                </div>
+            </nav>
         </div>
-        <figure>
-            <img src="blank.png" id="pelaajankuva" alt="pelaaja" height="100" title="Pelaaja"/>
-            <img src="blank.png" id="tietokoneenkuva" alt="tietokone" height="100" title="Tietokone"/>
-        </figure>
-        <div>
-            <pre id="tietokone">tietokoneen valinta tulee tähän</pre>
-            <pre id="tulos">TULOS TULEE TÄHÄN</pre>
+        <div class="row" id="hideatstart1" hidden="true">
+            <div class="col-xs-4 col-md-3">
+                <div class="thumbnail">
+                    <img src="blank.png" id="playerpicture" alt="player" height="100" title="Player"/>
+                    <div class="caption">
+                        <h3>Player</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-3 col-md-2">
+                <div class="thumbnail">
+                    <img src="img/vs.pn_.png" alt="vs"/>
+                </div>
+            </div>
+            <div class="col-xs-4 col-md-3">
+                <div class="thumbnail">
+                    <img src="blank.png" id="computerpicture" alt="computer" height="100" title="Computer"/>
+                    <div class="caption">
+                        <h3>Computer</h3>
+                    </div>
+                </div>
+            </div>
         </div>
-        <pre id="kirjanpito">Voitot: 0 Häviöt: 0 Tasapelit: 0</pre>
+        <div class="row" id="hideatstart2" hidden="true">
+            <div class="thumbnail">
+                <img src="blank.png" id="result" alt="result" title="result"/>
+            </div>
+        </div>
+        <pre>Wins: <span class="badge" id="winBad">0</span> Losses: <span class="badge" id="lossBad">0</span> Draws: <span class="badge" id="drawBad">0</span></pre>
+        <div class="progress">
+            <div id="winBar" class="progress-bar progress-bar-success progress-bar-striped active" style=""></div>
+            <div id="drawBar" class="progress-bar progress-bar-warning progress-bar-striped active" style=""></div>
+            <div id="lossBar" class="progress-bar progress-bar-danger progress-bar-striped active" style=""></div>
+        </div>
     </body>
 </html>
