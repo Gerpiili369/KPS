@@ -13,8 +13,13 @@
 - pariohjelmointia
 ## suunnittelu
 - mitä tietoa pitää siirtää palvelimen ja asiakkaan välillä
+ - Pelitilanne
+ - pelaajien valinnat
+ - pelin tulos
+ - vastustajan valinta
+ -pelaajien nimimerkit
 - missä muodossa siirretään
-  - suunnittele siirtomuoto (json)
+- suunnittele siirtomuoto (json)
 - missä tilanteissa tietoa siirtyy
 - milloin päivitetään asiakasnäkymät
 - miten pelaajat liitetään peliin
