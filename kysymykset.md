@@ -1,7 +1,11 @@
 # pelin nimi
+  kps multiplayer edition
 ## tekijät
+  Miikka Leppänen, Jere Tuunanen
 ## pelin aihe
+  kps?
 ## pelin kuvaus
+  play kps?
 
 ## pelin tavoite
 - opiskellaan tiedonsiirto asiakkaan ja palvelimen välillä.
