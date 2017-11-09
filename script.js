@@ -34,37 +34,41 @@ function decider(player) {
     document.getElementById("hideatstart1").hidden=false;
     document.getElementById("hideatstart2").hidden=false;
                 
-    if (player==='rock') {
-        if (computer==='rock') {
+function decider(p1, p2) {
+    //var choices=['rock','paper','scissors'];
+    //var computer=choices[Math.floor(Math.random()*choices.length)];
+
+    if (p1==='rock') {
+        if (p2==='rock') {
             return 'draw';
         }
-        else if (computer==='paper') {
-            return 'defeat';
+        else if (p2==='paper') {
+            return 'p2';
         }
         else {
-            return 'win';
+            return 'p1';
         }
     }
-    else if (player==='paper') {
-        if (computer==='rock') {
-            return 'win';
+    else if (p1==='paper') {
+        if (p2==='rock') {
+            return 'p1';
         }
-        else if (computer==='paper') {
+        else if (p2==='paper') {
             return 'draw';
         }
         else {
-            return 'defeat';
+            return 'p2';
         }
     }
     else {
-        if (computer==='rock') {
-            return 'defeat';
+        if (p2==='rock') {
+            return 'p2';
         }
-        else if (computer==='paper') {
-            return 'win';
+        else if (p2==='paper') {
+            return 'p1';
         }
         else {
             return 'draw';
         }
-    }    
+    }
 }
