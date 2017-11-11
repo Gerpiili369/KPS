@@ -1,14 +1,3 @@
-var wins=0;
-var losses=0;
-var draws=0;
-var games=0;
-var result="";
-
-function KPS(player) {
-    result=decider(player);
-    games+=1;
-}
-
 function decider(p1, p2) {
     //var choices=['rock','paper','scissors'];
     //var computer=choices[Math.floor(Math.random()*choices.length)];
