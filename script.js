@@ -7,15 +7,8 @@ var result="";
 function KPS(player) {
     result=decider(player);
     games+=1;
-            
-    if (result==='win') {wins+=1;}
-    if (result==='defeat') {losses+=1;}
-    if (result==='draw') {draws+=1;}
 }
 
-function decider(player) {
-    var choices=['rock','paper','scissors'];
-    var computer=choices[Math.floor(Math.random()*choices.length)];
 function decider(p1, p2) {
     //var choices=['rock','paper','scissors'];
     //var computer=choices[Math.floor(Math.random()*choices.length)];
