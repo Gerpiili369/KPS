@@ -1,5 +1,15 @@
 let socket = io();
 
+document.getElementById("rockbtn").addEventListener("click", function() {
+  socket.emit('choose', "rock")
+});
+document.getElementById("paperbtn").addEventListener("click", function() {
+  socket.emit('choose', "paper");
+});
+document.getElementById("scissorsbtn").addEventListener("click", function() {
+  socket.emit('choose', "scissors")
+});
+
 socket.on('result', (points, player, opponent, games) => {
   document.getElementById("winBad").innerHTML = points.p1;
   document.getElementById("drawBad").innerHTML = points.draw;
