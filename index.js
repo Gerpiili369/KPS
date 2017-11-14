@@ -31,7 +31,7 @@ io.on('connection', socket => {
     if (player1 == socket.id) selection.p1 = data;
     else if (player2 == socket.id) selection.p2 = data;
 
-    if (selection.p1 == null && selection.p2 == null) {
+    if (selection.p1 != "" && selection.p2 != "") {
       games ++
       let result = decider(selection.p1, selection.p2)
 
