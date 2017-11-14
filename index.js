@@ -11,8 +11,6 @@ const host = '127.0.0.1'
 const io = require('socket.io')(http);
 const game = require('./game.js');
 
-
-let points = {draw: 0, p1: 0, p2: 0};
 app.use('/', express.static(path.join(__dirname,'public')));
 
 let players = {
