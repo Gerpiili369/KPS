@@ -13,6 +13,7 @@ const game = require('./game.js');
 
 app.use('/', express.static(path.join(__dirname,'public')));
 
+let games = 0;
 let players = {
   p1: {
     selection: null,
@@ -34,7 +35,6 @@ let players = {
       draws: 0
     }
   }}
-let games = 0;
 
 io.on('connection', socket => {
   if (players.p1.id == null) players.p1.id = socket.id;
