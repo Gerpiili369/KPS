@@ -77,3 +77,7 @@ io.on('connection', socket => {
     else if (players.p2.id == socket.id) players.p2.id = null;
   });
 });
+
+http.listen(port,host, ()=>
+  console.log(`Server ${host} on port ${port}.`)
+);
