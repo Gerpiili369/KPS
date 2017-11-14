@@ -17,46 +17,65 @@ app.get('/', (req,res) =>
 
 let points = {draw: 0, p1: 0, p2: 0};
 
-let selection = {p1:'', p2:''}
-let games;
-let player1;
-let player2;
-
+let players = {
+  p1: {
+    selection: null,
+    id: null,
+    result: "",
+    points: {
+      wins: 0,
+      losses: 0,
+      draws: 0
+    }
+  },
+  p2: {
+    selection: null,
+    id: null,
+    result: null,
+    points: {
+      wins: 0,
+      losses: 0,
+      draws: 0
+    }
+  }}
+let games = 0;
 
 io.on('connection', socket => {
-  if (player1 == null) player1 = socket.id;
-  else if (player2 == null) player2 = socket.id;
+  if (players.p1.id == null) players.p1.id = socket.id;
+  else if (players.p2.id == null) players.p2.id = socket.id;
   else socket.emit('msgFromServer', 'Game full!');
 
   socket.on('choose', data => {
-    if (player1 == socket.id) selection.p1 = data;
-    else if (player2 == socket.id) selection.p2 = data;
-
-    if (selection.p1 != "" && selection.p2 != "") {
+    if (players.p1.id == socket.id) players.p1.selection = data;
+    else if (players.p2.id == socket.id) players.p2.selection = data;
+    console.log(players)
+    if (players.p1.selection != null && players.p2.selection != null) {
       games ++
-      let result = decider(selection.p1, selection.p2)
-
-      if (result == 'p1') {points.p1 ++}
-      if (result == 'p2') {points.p2 ++}
-      if (result == 'draw') {points.draws ++}
-
-      if (player1 == socket.id) {
-        socket.emit('result', points, selection.p1, selection.p2, games);
+      let result = game.decider(players.p1.selection, players.p2.selection)
+      console.log(result)
+      if (result == 'p1') {
+        players.p1.points.wins ++; players.p1.result = "win";
+        players.p2.points.losses ++; players.p2.result = "defeat";
       }
-      else if (player2 == socket.id) {
-        let p2help = {draw: 0, p2: 0, p1: 0}
-
-        p2help.draw = points.draw;
-        p2help.p1 = points.p2;
-        p2help.p2 = points.p1
-
-        socket.emit('result,', (p2help, selection.p2, selection.p1, games))
+      if (result == 'p2') {
+        players.p1.points.losses ++; players.p1.result = "defeat";
+        players.p2.points.wins ++; players.p2.result = "win";
       }
+      if (result == 'draw') {
+        players.p1.points.draws ++; players.p1.result = "draw";
+        players.p2.points.draws ++; players.p2.result = "draw";
+      }
+
+      io.to(players.p1.id).emit('result', players.p1, players.p2.selection, games);
+      io.to(players.p2.id).emit('result', players.p2, players.p1.selection, games);
+
+      players.p1.selection = null; players.p1.result = null;
+      players.p2.selection = null; players.p2.result = null;
     }
   });
 
   socket.on('disconnect', () => {
-    if (player1 == socket.id) player1 = null;
-    else if (player2 == socket.id) player2 = null;
+    if (players.p1.id == socket.id) players.p1.id = null;
+    else if (players.p2.id == socket.id) players.p2.id = null;
   });
 });
