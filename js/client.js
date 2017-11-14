@@ -1,4 +1,17 @@
+document.addEventListener("DOMContentLoaded", initialize)
+
+function initialize() {
 let socket = io();
+
+document.getElementById("rockbtn").addEventListener("click", function() {
+  socket.emit('choose', "rock")
+});
+document.getElementById("paperbtn").addEventListener("click", function() {
+  socket.emit('choose', "paper");
+});
+document.getElementById("scissorsbtn").addEventListener("click", function() {
+  socket.emit('choose', "scissors")
+});
 
 socket.on('result', (points, player, opponent, games) => {
   document.getElementById("winBad").innerHTML = points.p1;
@@ -16,3 +29,4 @@ socket.on('result', (points, player, opponent, games) => {
   document.getElementById("hideatstart1").hidden = false;
   document.getElementById("hideatstart2").hidden = false;
 });
+}

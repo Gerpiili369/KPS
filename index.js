@@ -31,7 +31,7 @@ io.on('connection', socket => {
     if (player1 == socket.id) selection.p1 = data;
     else if (player2 == socket.id) selection.p2 = data;
 
-    if (selection.p1 == null && selection.p2 == null) {
+    if (selection.p1 != "" && selection.p2 != "") {
       games ++
       let result = decider(selection.p1, selection.p2)
 
@@ -40,7 +40,7 @@ io.on('connection', socket => {
       if (result == 'draw') {points.draws ++}
 
       if (player1 == socket.id) {
-        socket.emit('result', points, seletion.p1, selection.p2, games);
+        socket.emit('result', points, selection.p1, selection.p2, games);
       }
       else if (player2 == socket.id) {
         let p2help = {draw: 0, p2: 0, p1: 0}
@@ -49,7 +49,7 @@ io.on('connection', socket => {
         p2help.p1 = points.p2;
         p2help.p2 = points.p1
 
-        socket.emit('result,', (p2help, seletion.p2, selection.p1, games))
+        socket.emit('result,', (p2help, selection.p2, selection.p1, games))
       }
     }
   });
