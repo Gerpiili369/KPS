@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000;
 const host = '127.0.0.1'
 
 const io = require('socket.io')(http);
+const game = require('./game.js');
 
 app.get('/', (req,res) =>
   res.sendFile(path.join(__dirname,'index.html'))
