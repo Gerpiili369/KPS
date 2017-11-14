@@ -1,3 +1,6 @@
+document.addEventListener("DOMContentLoaded", initialize)
+
+function initialize() {
 let socket = io();
 
 document.getElementById("rockbtn").addEventListener("click", function() {
@@ -26,3 +29,4 @@ socket.on('result', (points, player, opponent, games) => {
   document.getElementById("hideatstart1").hidden = false;
   document.getElementById("hideatstart2").hidden = false;
 });
+}
