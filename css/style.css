@@ -11,5 +11,21 @@
 }
 
 .scissors{
-  background-image: url(img/scizors.png);
+  background-image: url(img/scizorsrdy.png);
+}
+
+.defeat{
+background-image: url(img/defeatrdy.png);
+}
+
+.victory{
+  background-image: url(img/victoryrdy.png);
+}
+
+.draw{
+  background-image: url(img/drawrdy.png);
+}
+
+.vs{
+  background-image: url(img/vsrdy.png);
 }
