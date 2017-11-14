@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", initialize)
 
 function initialize() {
-let socket = io();
+  let socket = io();
   let theme = "horror";
 
   document.getElementById("rockbtn").addEventListener("click", function() {
