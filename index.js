@@ -18,7 +18,7 @@ let players = {
   p1: {
     selection: null,
     id: null,
-    result: "",
+    result: null,
     points: {
       wins: 0,
       losses: 0,
