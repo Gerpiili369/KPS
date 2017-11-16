@@ -33,6 +33,7 @@ function initialize() {
     document.getElementById("opponentpicture").src = "img/"+theme+"/"+opponent+".png";
     document.getElementById("result").src = "img/"+theme+"/"+player.result+".png";
     document.getElementById("vs").src = "img/"+theme+"/vs.png";
+    //document.getElementById("background").style.backgroundImage = "img/"+theme+"/background.png";
 
     document.getElementById("hideatstart1").hidden = false;
     document.getElementById("hideatstart2").hidden = false;
