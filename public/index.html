@@ -21,7 +21,8 @@
                 </div>
             </nav>
         </div>
-        <div class="row" id="hideatstart1" hidden="true">
+        <div id="hideatstart" hidden="true">
+          <div class="row">
             <div class="col-xs-4 col-md-3">
                 <div class="thumbnail">
                     <img id="playerpicture" alt="player" height="100" title="Player"/>
@@ -43,11 +44,12 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row" id="hideatstart2" hidden="true">
-            <div class="thumbnail">
-                <img id="result" alt="result" title="result"/>
-            </div>
+          </div>
+          <div class="row">
+              <div class="thumbnail">
+                  <img id="result" alt="result" title="result"/>
+              </div>
+          </div>
         </div>
         <pre>Wins: <span class="badge" id="winBad">0</span> Losses: <span class="badge" id="lossBad">0</span> Draws: <span class="badge" id="drawBad">0</span></pre>
         <div class="progress">
@@ -56,7 +58,7 @@
             <div id="lossBar" class="progress-bar progress-bar-danger progress-bar-striped active" style=""></div>
         </div>
         <div>
-          <label class="radio-inline"><input type="radio" id="classicactivate" name="themeradio">Classic</label>
+          <label class="radio-inline"><input type="radio" id="classicactivate" name="themeradio" checked="checked">Classic</label>
           <label class="radio-inline"><input type="radio" id="horroractivate" name="themeradio">Horror</label>
         </div>
       </div>
