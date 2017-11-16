@@ -71,6 +71,10 @@ io.on('connection', socket => {
   });
 
   socket.on('disconnect', () => {
+    games = 0
+    players.p1.points = {wins: 0, losses: 0, draws: 0}
+    players.p2.points = {wins: 0, losses: 0, draws: 0}
+
     if (players.p1.id == socket.id) players.p1.id = null;
     else if (players.p2.id == socket.id) players.p2.id = null;
   });
