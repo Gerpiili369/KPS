@@ -26,6 +26,10 @@ function initialize() {
     updateVisuals(theme);
   })
 
+  socket.on('msgFromServer', (data) => {
+    document.getElementById("msg").innerHTML = data
+  })
+
   socket.on('result', (player, opponent, games) => {
     mem.player = player
     mem.opponent = opponent
