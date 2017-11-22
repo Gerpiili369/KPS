@@ -49,6 +49,7 @@ io.on('connection', socket => {
     socket.emit('msgFromServer', 'Game full!');
     console.log(socket.id+" connected but game is full");
   }
+  
   socket.on('choose', data => {
     if (players.p1.id == socket.id) {
       players.p1.selection = data;
