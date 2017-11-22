@@ -49,16 +49,23 @@ io.on('connection', socket => {
     socket.emit('msgFromServer', 'Game full!');
     console.log(socket.id+" connected but game is full");
   }
-  
+
+  if (players.p1.id != null && players.p2.id != null) {
+    io.emit('msgFromServer', "Opponent found!")
+  }
+
   socket.on('choose', data => {
     if (players.p1.id == socket.id) {
       players.p1.selection = data;
+      io.to(players.p2.id).emit('msgFromServer', "Ready")
       console.log("Player 1 chose "+data);
     }
     else if (players.p2.id == socket.id) {
       players.p2.selection = data;
+      io.to(players.p1.id).emit('msgFromServer', "Ready")
       console.log("Player 2 chose "+data);
     }
+
     if (players.p1.selection != null && players.p2.selection != null) {
       games ++
       let result = game.decider(players.p1.selection, players.p2.selection)
@@ -84,6 +91,8 @@ io.on('connection', socket => {
 
       players.p1.selection = null; players.p1.result = null;
       players.p2.selection = null; players.p2.result = null;
+
+      io.emit('msgFromServer', "New round!")
       console.log("A new round has been started!");
     }
   });
@@ -95,10 +104,12 @@ io.on('connection', socket => {
 
     if (players.p1.id == socket.id) {
       players.p1.id = null;
+      io.to(players.p2.id).emit('msgFromServer', "Opponent left")
       console.log("Player 1 left");
     }
     else if (players.p2.id == socket.id) {
       players.p2.id = null;
+      io.to(players.p1.id).emit('msgFromServer', "Opponent left")
       console.log("Player 2 left");
     }
   });
