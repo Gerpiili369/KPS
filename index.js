@@ -35,24 +35,11 @@ let players = {
       draws: 0
     }
   }}
+let que = []
 
 io.on('connection', socket => {
-  if (players.p1.id == null) {
-    players.p1.id = socket.id;
-    console.log(socket.id+" connected as Player 1");
-  }
-  else if (players.p2.id == null) {
-    players.p2.id = socket.id;
-    console.log(socket.id+" connected as Player 2");
-  }
-  else {
-    socket.emit('msgFromServer', 'Game full!');
-    console.log(socket.id+" connected but game is full");
-  }
-
-  if (players.p1.id != null && players.p2.id != null) {
-    io.emit('msgFromServer', "Opponent found!")
-  }
+  que.push(socket.id)
+  updatePlayers()
 
   socket.on('choose', data => {
     if (players.p1.id == socket.id) {
@@ -110,8 +97,37 @@ io.on('connection', socket => {
       io.to(players.p1.id).emit('msgFromServer', "Opponent left")
       console.log("Player 2 left");
     }
+    else {
+      que.splice(que.indexOf(socket.id), 1);
+    }
+
+    updatePlayers();
   });
 });
+
+function updatePlayers() {
+  if (que[0] != undefined) {
+    if (players.p1.id == null) {
+      players.p1.id = que.shift();
+      console.log(players.p1.id+" joined as Player 1");
+    }
+    else if (players.p2.id == null) {
+      players.p2.id = que.shift();
+      console.log(players.p2.id+" joined as Player 2");
+    }
+    if (que[0] != undefined) {
+      que.forEach(queId => {
+        io.to(queId).emit('msgFromServer', 'Game full!');
+      });
+      console.log("Players in que: "+que.length);
+    }
+  }
+
+  if (players.p1.id != null && players.p2.id != null) {
+    io.to(players.p1.id).emit('msgFromServer', "Opponent found!");
+    io.to(players.p2.id).emit('msgFromServer', "Opponent found!");
+  }
+}
 
 function resetGame() {
   games = 0
