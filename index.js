@@ -103,17 +103,26 @@ io.on('connection', socket => {
     players.p2.points = {wins: 0, losses: 0, draws: 0}
 
     if (players.p1.id == socket.id) {
+      resetGame()
       players.p1.id = null;
       io.to(players.p2.id).emit('msgFromServer', "Opponent left")
       console.log("Player 1 left");
     }
     else if (players.p2.id == socket.id) {
+      resetGame();
       players.p2.id = null;
       io.to(players.p1.id).emit('msgFromServer', "Opponent left")
       console.log("Player 2 left");
     }
   });
 });
+
+function resetGame() {
+  games = 0
+
+  players.p1.points = {wins: 0, losses: 0, draws: 0}
+  players.p2.points = {wins: 0, losses: 0, draws: 0}
+}
 
 http.listen(port,host, ()=>
   console.log(`Server ${host} on port ${port}.`)
