@@ -1,76 +1,75 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Rock, paper, scissors!</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link id="stylesheet" rel="stylesheet" href="css/defeault.css">
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="js/client.js"></script>
-    <script src='http://use.edgefonts.net/eater.js'></script>
-  </head>
-  <body>
-    <div class="row">
-      <div class="col-xs-4 col-md-4">
-        <div class="btn-group" role="group">
-          <button type="button" class="btn btn-default" id="rockbtn">ROCK</button>
-          <button type="button" class="btn btn-default" id="paperbtn">PAPER</button>
-          <button type="button" class="btn btn-default" id="scissorsbtn">SCISSORS</button>
-        </div>
-      </div>
-      <div class="col-xs-4 col-md-4">
-        <pre>Wins: <span class="badge" id="winBad">0</span> Losses: <span class="badge" id="lossBad">0</span> Draws: <span class="badge" id="drawBad">0</span></pre>
-      </div>
-      <div class="col-xs-4 col-md-4">
-        <h1 id="msg">Waiting for opponent...</h1>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-4 col-md-4">
-        <div class="thumbnail">
-          <img id="playerpicture" alt="player" height="100"/>
-          <div class="caption">
-            <h3>You</h3>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-4 col-md-4">
-        <div class="thumbnail">
-          <img id="vs" alt="vs" height="100"/>
-        </div>
-      </div>
-      <div class="col-xs-4 col-md-4">
-        <div class="thumbnail">
-          <img id="opponentpicture" alt="opponent" height="100"/>
-          <div class="caption">
-            <h3>Opponent</h3>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="hideatstart" hidden="true">
-      <div class="row">
-        <div class="col-xs-3 col-md-3">
-        </div>
-        <div class="col-xs-6 col-md-6">
-          <div class="row">
-            <div class="thumbnail">
-              <img id="result" alt="result"/>
+    <head>
+        <title>Rock, paper, scissors!</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link id="stylesheet" rel="stylesheet" href="css/defeault.css">
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="js/client.js"></script>
+        <script src='http://use.edgefonts.net/eater.js'></script>
+    </head>
+    <body>
+        <div class="row">
+            <div class="col-xs-4 col-md-4">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default" id="rockbtn">ROCK</button>
+                    <button type="button" class="btn btn-default" id="paperbtn">PAPER</button>
+                    <button type="button" class="btn btn-default" id="scissorsbtn">SCISSORS</button>
+                </div>
             </div>
-          </div>
+            <div class="col-xs-4 col-md-4">
+                <pre>Wins: <span class="badge" id="winBad">0</span> Losses: <span class="badge" id="lossBad">0</span> Draws: <span class="badge" id="drawBad">0</span></pre>
+            </div>
+            <div class="col-xs-4 col-md-4">
+                <h1 id="msg">Waiting for opponent...</h1>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="progress">
-      <div id="winBar" class="progress-bar progress-bar-success progress-bar-striped active" style=""></div>
-      <div id="drawBar" class="progress-bar progress-bar-warning progress-bar-striped active" style=""></div>
-      <div id="lossBar" class="progress-bar progress-bar-danger progress-bar-striped active" style=""></div>
-    </div>
-    <div>
-      <label class="radio-inline"><input type="radio" id="classicactivate" name="themeradio" checked="checked">Classic</label>
-      <label class="radio-inline"><input type="radio" id="horroractivate" name="themeradio">Horror</label>
-    </div>
-  </body>
+        <div class="row">
+            <div class="col-xs-4 col-md-4">
+                <div class="thumbnail">
+                    <img id="playerpicture" alt="player" height="100"/>
+                    <div class="caption">
+                        <h3>You</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4 col-md-4">
+                <div class="thumbnail">
+                    <img id="vs" alt="vs" height="100"/>
+                </div>
+            </div>
+            <div class="col-xs-4 col-md-4">
+                <div class="thumbnail">
+                    <img id="opponentpicture" alt="opponent" height="100"/>
+                    <div class="caption">
+                        <h3>Opponent</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="hideatstart" hidden="true">
+            <div class="row">
+                <div class="col-xs-3 col-md-3"></div>
+                <div class="col-xs-6 col-md-6">
+                    <div class="row">
+                        <div class="thumbnail">
+                            <img id="result" alt="result"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="progress">
+            <div id="winBar" class="progress-bar progress-bar-success progress-bar-striped active" style=""></div>
+            <div id="drawBar" class="progress-bar progress-bar-warning progress-bar-striped active" style=""></div>
+            <div id="lossBar" class="progress-bar progress-bar-danger progress-bar-striped active" style=""></div>
+        </div>
+        <div>
+            <label class="radio-inline"><input type="radio" id="classicactivate" name="themeradio" checked="checked">Classic</label>
+            <label class="radio-inline"><input type="radio" id="horroractivate" name="themeradio">Horror</label>
+        </div>
+    </body>
 </html>
