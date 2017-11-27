@@ -25,6 +25,10 @@ function initialize() {
         theme = "horror"
         updateVisuals(theme);
     })
+    document.getElementById('fuckrullaactivate').addEventListener("click", function() {
+        theme = "fuckrulla"
+        updateVisuals(theme);
+    })
 
     socket.on('msgFromServer', (data) => {
         document.getElementById("msg").innerHTML = data
