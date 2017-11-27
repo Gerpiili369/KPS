@@ -79,7 +79,8 @@ io.on('connection', socket => {
       players.p1.selection = null; players.p1.result = null;
       players.p2.selection = null; players.p2.result = null;
 
-      io.emit('msgFromServer', "New round!")
+      io.to(players.p1.id).emit('msgFromServer', "New round!")
+      io.to(players.p1.id).emit('msgFromServer', "New round!")
       console.log("A new round has been started!");
     }
   });
