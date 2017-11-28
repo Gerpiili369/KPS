@@ -12,11 +12,11 @@
         <script src='http://use.edgefonts.net/eater.js'></script>
     </head>
     <body>
-        <div class="row">
         <div id="login">
             <input type="text" id="name">
             <button type="button" class="btn btn-default" id="namebtn" >Submit</button>
         </div>
+        <div class="row" id="topbar" hidden="true">
             <div class="col-xs-4 col-md-4">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-default" id="rockbtn">ROCK</button>
@@ -31,7 +31,7 @@
                 <h1 id="msg">Waiting for opponent...</h1>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="resultarea" hidden="true">
             <div class="col-xs-4 col-md-4">
                 <div class="thumbnail">
                     <img id="playerpicture" alt="player" height="100"/>
