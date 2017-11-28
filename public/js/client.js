@@ -8,30 +8,30 @@ function initialize() {
 
     updateVisuals(theme);
 
-    document.getElementById("namebtn").addEventListener("click", function() {
+    document.getElementById("namebtn").addEventListener("click", () => {
         socket.emit('setName', document.getElementById("name").value);
         document.getElementById("login").hidden = true;
         document.getElementById("topbar").hidden = false;
         document.getElementById("resultarea").hidden = false;
     })
-    document.getElementById("rockbtn").addEventListener("click", function() {
+    document.getElementById("rockbtn").addEventListener("click", () => {
         socket.emit('choose', "rock");
     });
-    document.getElementById("paperbtn").addEventListener("click", function() {
+    document.getElementById("paperbtn").addEventListener("click", () => {
         socket.emit('choose', "paper");
     });
-    document.getElementById("scissorsbtn").addEventListener("click", function() {
+    document.getElementById("scissorsbtn").addEventListener("click", () => {
         socket.emit('choose', "scissors");
     });
-    document.getElementById('classicactivate').addEventListener("click", function() {
+    document.getElementById('classicactivate').addEventListener("click", () => {
         theme = "defeault";
         updateVisuals(theme);
     });
-    document.getElementById('horroractivate').addEventListener("click", function() {
+    document.getElementById('horroractivate').addEventListener("click", () => {
         theme = "horror";
         updateVisuals(theme);
     })
-    document.getElementById('fuckrullaactivate').addEventListener("click", function() {
+    document.getElementById('fuckrullaactivate').addEventListener("click", () => {
         theme = "fuckrulla";
         updateVisuals(theme);
     })
