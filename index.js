@@ -163,5 +163,5 @@ function resetGame() {
 }
 
 http.listen(port,host, ()=>
-    console.log(`Server ${host} on port ${port}.`);
+    console.log(`Server ${host} on port ${port}.`)
 );
