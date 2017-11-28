@@ -9,6 +9,7 @@ const port = process.env.PORT || 3000;
 const host = '127.0.0.1'
 
 const io = require('socket.io')(http);
+const fs = require('fs');
 const game = require('./game.js');
 
 app.use('/', express.static(path.join(__dirname,'public')));
@@ -39,6 +40,10 @@ let players = {
 let que = []
 var playerlist = {};
 
+fs.readFile('serverData/playerlist.json', 'utf-8', (err, data) => {
+    playerlist = JSON.parse(data);
+});
+
 io.on('connection', socket => {
     socket.on('setName', data => {
         if (playerlist[data] == undefined) {
@@ -51,6 +56,10 @@ io.on('connection', socket => {
         } else {
             console.log("error you fug up");
         }
+
+        fs.writeFile('serverData/playerlist.json', JSON.stringify(playerlist), err => {
+            if (err) console.log(err);
+        });
     });
 
     function login(data) {
