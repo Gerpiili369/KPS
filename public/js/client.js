@@ -8,6 +8,10 @@ function initialize() {
 
     updateVisuals(theme);
 
+    document.getElementById("namebtn").addEventListener("click", function() {
+        socket.emit('setName', document.getElementById("name").value)
+        document.getElementById("login").hidden = true
+    })
     document.getElementById("rockbtn").addEventListener("click", function() {
         socket.emit('choose', "rock");
     });

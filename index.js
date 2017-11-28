@@ -37,8 +37,27 @@ let players = {
     }
 }
 let que = []
+var playerlist = {};
 
 io.on('connection', socket => {
+    socket.on('setName', data => {
+        if (playerlist[data] == undefined) {
+            playerlist[data] = {};
+            playerlist[data].points = {wins: 0, losses: 0, draws: 0};
+
+            login(data);
+        } else if (playerlist[data].socket == null) {
+            login(data);
+        } else {
+            console.log("error you fug up");
+        }
+    });
+
+    function login(data) {
+        socket.name = data;
+        playerlist[data].socket = socket.id;
+    }
+
     que.push(socket.id)
     updatePlayers()
 
@@ -98,6 +117,7 @@ io.on('connection', socket => {
             que.splice(que.indexOf(socket.id), 1);
         }
 
+        playerlist[socket.name].socket = null
         updatePlayers();
     });
 });
