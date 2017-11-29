@@ -49,17 +49,17 @@ function initialize() {
         document.getElementById("msg").innerHTML = data;
     })
 
-    socket.on('result', (player, opponent, games) => {
+    socket.on('result', (player, opponent) => {
         mem.player = player;
         mem.opponent = opponent;
 
-        document.getElementById("winBad").innerHTML = player.points.wins;
-        document.getElementById("drawBad").innerHTML = player.points.draws;
-        document.getElementById("lossBad").innerHTML =  player.points.losses;
+        document.getElementById("winBad").innerHTML = player.total.wins;
+        document.getElementById("drawBad").innerHTML = player.total.draws;
+        document.getElementById("lossBad").innerHTML =  player.total.losses;
 
-        document.getElementById("winBar").style = "width: "+(player.points.wins/games*100)+"%";
-        document.getElementById("drawBar").style = "width: "+(player.points.draws/games*100)+"%";
-        document.getElementById("lossBar").style = "width: "+(player.points.losses/games*100)+"%";
+        document.getElementById("winBar").style = "width: "+(player.points.wins/player.games*100)+"%";
+        document.getElementById("drawBar").style = "width: "+(player.points.draws/player.games*100)+"%";
+        document.getElementById("lossBar").style = "width: "+(player.points.losses/player.games*100)+"%";
 
         updateVisuals(theme);
     });
