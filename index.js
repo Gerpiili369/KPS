@@ -58,7 +58,7 @@ io.on('connection', socket => {
         } else if (playerlist[data].socket == null) {
             login(data);
         } else {
-            console.log("error you fug up");
+            socket.emit('loginFail', "User already logged in!")
         }
 
         fs.writeFile('serverData/playerlist.json', JSON.stringify(playerlist), err => {
@@ -67,72 +67,74 @@ io.on('connection', socket => {
     });
 
     function login(data) {
+        socket.emit('loginSucc')
+
         socket.name = data;
         playerlist[data].socket = socket.id;
-    }
 
-    que.push(socket.id)
-    updatePlayers();
+        que.push(socket.id)
+        updatePlayers();
 
-    socket.on('choose', data => {
-        if (players.p1.id == socket.id) {
-            players.p1.selection = data;
-            io.to(players.p2.id).emit('msgFromServer', "Ready");
-            console.log("Player 1 chose "+data);
-        } else if (players.p2.id == socket.id) {
-            players.p2.selection = data;
-            io.to(players.p1.id).emit('msgFromServer', "Ready");
-            console.log("Player 2 chose "+data);
-        }
-
-        if (players.p1.selection != null && players.p2.selection != null) {
-            games ++;
-            let result = game.decider(players.p1.selection, players.p2.selection);
-
-            if (result == 'p1') {
-                players.p1.points.wins ++; players.p1.result = "win";
-                players.p2.points.losses ++; players.p2.result = "defeat";
-                console.log("Player 1 has won the round");
-            } else if (result == 'p2') {
-                players.p1.points.losses ++; players.p1.result = "defeat";
-                players.p2.points.wins ++; players.p2.result = "win";
-                console.log("Player 2 has won the round");
-            } else if (result == 'draw') {
-                players.p1.points.draws ++; players.p1.result = "draw";
-                players.p2.points.draws ++; players.p2.result = "draw";
-                console.log("The round was a draw");
+        socket.on('choose', data => {
+            if (players.p1.id == socket.id) {
+                players.p1.selection = data;
+                io.to(players.p2.id).emit('msgFromServer', "Ready");
+                console.log("Player 1 chose "+data);
+            } else if (players.p2.id == socket.id) {
+                players.p2.selection = data;
+                io.to(players.p1.id).emit('msgFromServer', "Ready");
+                console.log("Player 2 chose "+data);
             }
 
-            io.to(players.p1.id).emit('result', players.p1, players.p2.selection, games);
-            io.to(players.p2.id).emit('result', players.p2, players.p1.selection, games);
+            if (players.p1.selection != null && players.p2.selection != null) {
+                games ++;
+                let result = game.decider(players.p1.selection, players.p2.selection);
 
-            players.p1.selection = null; players.p1.result = null;
-            players.p2.selection = null; players.p2.result = null;
+                if (result == 'p1') {
+                    players.p1.points.wins ++; players.p1.result = "win";
+                    players.p2.points.losses ++; players.p2.result = "defeat";
+                    console.log("Player 1 has won the round");
+                } else if (result == 'p2') {
+                    players.p1.points.losses ++; players.p1.result = "defeat";
+                    players.p2.points.wins ++; players.p2.result = "win";
+                    console.log("Player 2 has won the round");
+                } else if (result == 'draw') {
+                    players.p1.points.draws ++; players.p1.result = "draw";
+                    players.p2.points.draws ++; players.p2.result = "draw";
+                    console.log("The round was a draw");
+                }
 
-            io.to(players.p1.id).emit('msgFromServer', "New round!");
-            io.to(players.p1.id).emit('msgFromServer', "New round!");
-            console.log("A new round has been started!");
-        }
-    });
+                io.to(players.p1.id).emit('result', players.p1, players.p2.selection, games);
+                io.to(players.p2.id).emit('result', players.p2, players.p1.selection, games);
 
-    socket.on('disconnect', () => {
-        if (players.p1.id == socket.id) {
-            resetGame();
-            players.p1.id = null;
-            io.to(players.p2.id).emit('msgFromServer', "Opponent left");
-            console.log("Player 1 left");
-        } else if (players.p2.id == socket.id) {
-            resetGame();
-            players.p2.id = null;
-            io.to(players.p1.id).emit('msgFromServer', "Opponent left");
-            console.log("Player 2 left");
-        } else {
-            que.splice(que.indexOf(socket.id), 1);
-        }
+                players.p1.selection = null; players.p1.result = null;
+                players.p2.selection = null; players.p2.result = null;
 
-        playerlist[socket.name].socket = null;
-        updatePlayers();
-    });
+                io.to(players.p1.id).emit('msgFromServer', "New round!");
+                io.to(players.p1.id).emit('msgFromServer', "New round!");
+                console.log("A new round has been started!");
+            }
+        });
+
+        socket.on('disconnect', () => {
+            if (players.p1.id == socket.id) {
+                resetGame();
+                players.p1.id = null;
+                io.to(players.p2.id).emit('msgFromServer', "Opponent left");
+                console.log("Player 1 left");
+            } else if (players.p2.id == socket.id) {
+                resetGame();
+                players.p2.id = null;
+                io.to(players.p1.id).emit('msgFromServer', "Opponent left");
+                console.log("Player 2 left");
+            } else {
+                que.splice(que.indexOf(socket.id), 1);
+            }
+
+            playerlist[socket.name].socket = null;
+            updatePlayers();
+        });
+    }
 });
 
 function updatePlayers() {

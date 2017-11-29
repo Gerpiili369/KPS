@@ -10,9 +10,6 @@ function initialize() {
 
     document.getElementById("namebtn").addEventListener("click", () => {
         socket.emit('setName', document.getElementById("name").value);
-        document.getElementById("login").hidden = true;
-        document.getElementById("topbar").hidden = false;
-        document.getElementById("resultarea").hidden = false;
     })
     document.getElementById("rockbtn").addEventListener("click", () => {
         socket.emit('choose', "rock");
@@ -34,6 +31,15 @@ function initialize() {
     document.getElementById('fuckrullaactivate').addEventListener("click", () => {
         theme = "fuckrulla";
         updateVisuals(theme);
+    });
+
+    socket.on('loginSucc', (data) => {
+        document.getElementById("login").hidden = true;
+        document.getElementById("topbar").hidden = false;
+        document.getElementById("resultarea").hidden = false;
+    });
+
+    socket.on('loginFail', (data) => {
     });
 
     socket.on('msgFromServer', (data) => {
