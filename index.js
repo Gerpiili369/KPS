@@ -42,6 +42,10 @@ var playerlist = {};
 
 fs.readFile('serverData/playerlist.json', 'utf-8', (err, data) => {
     playerlist = JSON.parse(data);
+
+    Object.keys(playerlist).forEach(element => {
+        playerlist[element].socket = null;
+    });
 });
 
 io.on('connection', socket => {
