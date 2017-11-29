@@ -60,10 +60,6 @@ io.on('connection', socket => {
         } else {
             socket.emit('loginFail', "User already logged in!")
         }
-
-        fs.writeFile('serverData/playerlist.json', JSON.stringify(playerlist), err => {
-            if (err) console.log(err);
-        });
     });
 
     function login(data) {
@@ -159,6 +155,8 @@ function updatePlayers() {
         io.to(players.p1.id).emit('msgFromServer', "Opponent found!");
         io.to(players.p2.id).emit('msgFromServer', "Opponent found!");
     }
+
+    fs.writeFile('serverData/playerlist.json', JSON.stringify(playerlist), err => {if (err) console.log(err)});
 }
 
 function resetGame() {
