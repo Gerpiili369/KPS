@@ -30,11 +30,11 @@ function initialize() {
     document.getElementById('horroractivate').addEventListener("click", () => {
         theme = "horror";
         updateVisuals(theme);
-    })
+    });
     document.getElementById('fuckrullaactivate').addEventListener("click", () => {
         theme = "fuckrulla";
         updateVisuals(theme);
-    })
+    });
 
     socket.on('msgFromServer', (data) => {
         document.getElementById("msg").innerHTML = data;
