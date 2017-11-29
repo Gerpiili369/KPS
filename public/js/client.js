@@ -34,12 +34,15 @@ function initialize() {
     });
 
     socket.on('loginSucc', (data) => {
+        document.getElementById("logindata").innerHTML = data;
+
         document.getElementById("login").hidden = true;
         document.getElementById("topbar").hidden = false;
         document.getElementById("resultarea").hidden = false;
     });
 
     socket.on('loginFail', (data) => {
+        document.getElementById("logindata").innerHTML = data;
     });
 
     socket.on('msgFromServer', (data) => {
