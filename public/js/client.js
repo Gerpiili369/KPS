@@ -63,16 +63,17 @@ function initialize() {
 
         updateVisuals(theme);
     });
-}
 
-function updateVisuals(theme) {
-    document.getElementById("playerpicture").src = "img/"+theme+"/"+mem.player.selection+".png";
-    document.getElementById("opponentpicture").src = "img/"+theme+"/"+mem.opponent+".png";
-    document.getElementById("result").src = "img/"+theme+"/"+mem.player.result+".png";
-    document.getElementById("vs").src = "img/"+theme+"/vs.png";
-    document.getElementById("stylesheet").href = "css/"+theme+".css";
 
-    if (mem.player.result != null) {
-        document.getElementById("hideatstart").hidden = false;
+    function updateVisuals(theme) {
+        document.getElementById("playerpicture").src = "img/"+theme+"/"+mem.player.selection+".png";
+        document.getElementById("opponentpicture").src = "img/"+theme+"/"+mem.opponent+".png";
+        document.getElementById("result").src = "img/"+theme+"/"+mem.player.result+".png";
+        document.getElementById("vs").src = "img/"+theme+"/vs.png";
+        document.getElementById("stylesheet").href = "css/"+theme+".css";
+
+        if (mem.player.result != null) {
+            document.getElementById("hideatstart").hidden = false;
+        }
     }
 }
