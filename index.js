@@ -176,8 +176,6 @@ function updatePlayers() {
 }
 
 function resetGame(p) {
-
-
     Object.keys(players).forEach(p => {
         playerlist[players[p]].games = 0;
         playerlist[players[p]].points = {wins: 0, losses: 0, draws: 0};
