@@ -149,11 +149,9 @@ function updatePlayers() {
     if (que[0] != undefined) {
         if (players.p1 == null) {
             players.p1 = que.shift();
-            console.log("Players in game: "+players.p1+" Vs. "+players.p2);
             console.log("["+players.p1+"] joined as Player 1");
         } else if (players.p2 == null) {
             players.p2 = que.shift();
-            console.log("Players in game: "+players.p1+" Vs. "+players.p2);
             console.log("["+players.p2+"] joined as Player 2");
         }
 
@@ -162,6 +160,7 @@ function updatePlayers() {
                 io.to(playerlist[username].socketId).emit('msgFromServer', 'Game full!');
             });
 
+            console.log("Players in game: "+players.p1+" Vs. "+players.p2);
             console.log("Players in que: "+que.length);
         }
     }
