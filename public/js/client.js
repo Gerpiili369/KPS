@@ -1,9 +1,8 @@
-let theme = "defeault";
-let mem = {player: {selection: null, result: null}, opponent: null};
-
 document.addEventListener("DOMContentLoaded", initialize);
 
 function initialize() {
+    let theme = "defeault";
+    let mem = {player: {selection: null, result: null}, opponent: null};
     let socket = io();
 
     updateVisuals(theme);
