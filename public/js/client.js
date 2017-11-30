@@ -10,7 +10,7 @@ function initialize() {
     addSomeListeners(socket);
 
     socket.on('loginSucc', (data) => {
-        document.getElementById("logindata").innerHTML = data;
+        htmlEdit("logindata",data);
 
         document.getElementById("login").hidden = true;
         document.getElementById("topbar").hidden = false;
@@ -18,11 +18,11 @@ function initialize() {
     });
 
     socket.on('loginFail', (data) => {
-        document.getElementById("logindata").innerHTML = data;
+        htmlEdit("logindata",data);
     });
 
     socket.on('msgFromServer', (data) => {
-        document.getElementById("msg").innerHTML = data;
+        htmlEdit("msg",data);
     })
 
     socket.on('result', (player, opponent) => {
@@ -55,6 +55,10 @@ function initialize() {
         addClickTheme('classicactivate',"defeault");
         addClickTheme('horroractivate',"horror");
         addClickTheme('fuckrullaactivate',"fuckrulla");
+    }
+
+    function htmlEdit(id,data) {
+        document.getElementById(id).innerHTML = data;
     }
 
     function addClickEmit(id,socket,eventName,data) {
