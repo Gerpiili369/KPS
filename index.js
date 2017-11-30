@@ -30,7 +30,9 @@ if (fs.existsSync('serverData/playerlist.json')) {
 
 io.on('connection', socket => {
     socket.on('setName', username => {
-        if (playerlist[username] == undefined) {
+        if (username == "") {
+            socket.emit('loginFail', "Username is empty!")
+        } else if (playerlist[username] == undefined) {
             playerlist[username] = {
                 selection: null,
                 result: null,
