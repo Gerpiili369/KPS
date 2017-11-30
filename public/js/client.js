@@ -12,9 +12,7 @@ function initialize() {
     socket.on('loginSucc', (data) => {
         htmlEdit("logindata",data);
 
-        document.getElementById("login").hidden = true;
-        document.getElementById("topbar").hidden = false;
-        document.getElementById("resultarea").hidden = false;
+        updateVisibility(["topbar","resultarea"],["login"])
     });
 
     socket.on('loginFail', (data) => {
@@ -71,6 +69,15 @@ function initialize() {
             theme = data;
             updateVisuals(theme);
         });
+    }
+
+    function updateVisibility(nothidden,hidden) {
+            nothidden.forEach(e => {
+                document.getElementById(e).hidden = false;
+            });
+            hidden.forEach(e => {
+                document.getElementById(e).hidden = true;
+            });
     }
 
     function updateVisuals(theme) {
