@@ -7,31 +7,7 @@ function initialize() {
     let socket = io();
 
     updateVisuals(theme);
-
-    document.getElementById("namebtn").addEventListener("click", () => {
-        socket.emit('setName', document.getElementById("name").value);
-    })
-    document.getElementById("rockbtn").addEventListener("click", () => {
-        socket.emit('choose', "rock");
-    });
-    document.getElementById("paperbtn").addEventListener("click", () => {
-        socket.emit('choose', "paper");
-    });
-    document.getElementById("scissorsbtn").addEventListener("click", () => {
-        socket.emit('choose', "scissors");
-    });
-    document.getElementById('classicactivate').addEventListener("click", () => {
-        theme = "defeault";
-        updateVisuals(theme);
-    });
-    document.getElementById('horroractivate').addEventListener("click", () => {
-        theme = "horror";
-        updateVisuals(theme);
-    });
-    document.getElementById('fuckrullaactivate').addEventListener("click", () => {
-        theme = "fuckrulla";
-        updateVisuals(theme);
-    });
+    addSomeListeners(socket);
 
     socket.on('loginSucc', (data) => {
         document.getElementById("logindata").innerHTML = data;
@@ -64,6 +40,34 @@ function initialize() {
         updateVisuals(theme);
     });
 
+    function addSomeListeners(socket) {
+        document.getElementById("namebtn").addEventListener("click", () => {
+            socket.emit('setName',document.getElementById("name").value);
+        });
+
+        addClickEmit("playai",socket,'setMode',"ai");
+        addClickEmit("playother",socket,'setMode',"other");
+        addClickEmit("playfriend",socket,'setMode',"friend");
+        addClickEmit("rockbtn",socket,'choose',"rock");
+        addClickEmit("paperbtn",socket,'choose',"paper");
+        addClickEmit("scissorsbtn",socket,'choose',"scissors")
+
+        addClickTheme('classicactivate',"defeault");
+        addClickTheme('horroractivate',"horror");
+        addClickTheme('fuckrullaactivate',"fuckrulla");
+    }
+
+    function addClickEmit(id,socket,eventName,data) {
+        console.log(id,eventName,data);
+        document.getElementById(id).addEventListener("click", () => socket.emit(eventName, data));
+    }
+
+    function addClickTheme(id,data) {
+        document.getElementById(id).addEventListener("click", () => {
+            theme = data;
+            updateVisuals(theme);
+        });
+    }
 
     function updateVisuals(theme) {
         document.getElementById("playerpicture").src = "img/"+theme+"/"+mem.player.selection+".png";
