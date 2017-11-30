@@ -162,7 +162,7 @@ function updatePlayers() {
                 io.to(playerlist[username].socketId).emit('msgFromServer', 'Game full!');
             });
 
-            console.log("Players in que: "+que);
+            console.log("Players in que: "+que.length);
         }
     }
 
