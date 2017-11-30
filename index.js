@@ -111,9 +111,10 @@ io.on('connection', socket => {
                     if (p == "p1") {otherP = "p2"} else if (p == "p2") {otherP = "p1"}
 
                     playerlist[players[p]].games ++
-
                     io.to(playerlist[players[p]].socketId).emit('result', playerlist[players[p]], playerlist[players[otherP]].selection);
+                });
 
+                Object.keys(players).forEach(p => {
                     playerlist[players[p]].selection = null;
                     playerlist[players[p]].result = null;
 
