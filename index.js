@@ -70,11 +70,11 @@ io.on('connection', socket => {
             if (playerlist[players.p1].socketId == socket.id) {
                 playerlist[players.p1].selection = data;
                 io.to(playerlist[players.p2].socketId).emit('msgFromServer', "Ready");
-                console.log(players.p1+" chose "+data);
+                console.log("["+players.p1+"] chose "+data);
             } else if (playerlist[players.p2].socketId == socket.id) {
                 playerlist[players.p2].selection = data;
                 io.to(playerlist[players.p1].socketId).emit('msgFromServer', "Ready");
-                console.log(players.p2+" chose "+data);
+                console.log("["+players.p2+"] chose "+data);
             }
 
             if (playerlist[players.p1].selection != null && playerlist[players.p2].selection != null) {
@@ -87,7 +87,7 @@ io.on('connection', socket => {
                     playerlist[players.p2].points.losses ++;
                     playerlist[players.p2].total.losses ++;
                     playerlist[players.p2].result = "defeat";
-                    console.log("Player 1 has won the round");
+                    console.log("["+players.p1+"] has won the round");
                 } else if (result == 'p2') {
                     playerlist[players.p1].points.losses ++;
                     playerlist[players.p1].total.losses ++;
@@ -95,7 +95,7 @@ io.on('connection', socket => {
                     playerlist[players.p2].points.wins ++;
                     playerlist[players.p2].total.wins ++;
                     playerlist[players.p2].result = "win";
-                    console.log("Player 2 has won the round");
+                    console.log("["+players.p2+"] has won the round");
                 } else if (result == 'draw') {
                     playerlist[players.p1].points.draws ++;
                     playerlist[players.p1].total.draws ++;
@@ -129,12 +129,12 @@ io.on('connection', socket => {
                 resetGame("p1");
 
                 io.to(playerlist[players.p2].socketId).emit('msgFromServer', "Opponent left");
-                console.log("Player 1 left");
+                console.log("["+players.p1+"] left");
             } else if (playerlist[players.p2].socketId == socket.id) {
                 resetGame("p2");
 
                 io.to(playerlist[players.p1].socketId).emit('msgFromServer', "Opponent left");
-                console.log("Player 2 left");
+                console.log("["+players.p2+"] left");
             } else {
                 que.splice(que.indexOf(socket.name), 1);
             }
@@ -149,12 +149,12 @@ function updatePlayers() {
     if (que[0] != undefined) {
         if (players.p1 == null) {
             players.p1 = que.shift();
-            console.log(players.p1+" joined as Player 1");
             console.log("Players in game: "+players.p1+" Vs. "+players.p2);
+            console.log("["+players.p1+"] joined as Player 1");
         } else if (players.p2 == null) {
             players.p2 = que.shift();
-            console.log(players.p2+" joined as Player 2");
             console.log("Players in game: "+players.p1+" Vs. "+players.p2);
+            console.log("["+players.p2+"] joined as Player 2");
         }
 
         if (que[0] != undefined) {
