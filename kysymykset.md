@@ -1,23 +1,24 @@
 # pelin nimi
-  kps multiplayer edition
+kps multiplayer edition
 ## tekijät
-  Miikka Leppänen, Jere Tuunanen
+Miikka Leppänen, Jere Tuunanen
 ## pelin aihe
-  kps?
+kps?
 ## pelin kuvaus
-  play kps?
+play kps?
 
 ## pelin tavoite
 - opiskellaan tiedonsiirto asiakkaan ja palvelimen välillä.
 - parityö
 - pariohjelmointia
+
 ## suunnittelu
 - mitä tietoa pitää siirtää palvelimen ja asiakkaan välillä
- - Pelitilanne
- - pelaajien valinnat
- - pelin tulos
- - vastustajan valinta
- -pelaajien nimimerkit
+    - Pelitilanne
+    - pelaajien valinnat
+    - pelin tulos
+    - vastustajan valinta
+    -pelaajien nimimerkit
 - missä muodossa siirretään
 - suunnittele siirtomuoto (json)
 - missä tilanteissa tietoa siirtyy
