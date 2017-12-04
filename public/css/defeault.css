@@ -3,3 +3,28 @@ body{
     background-repeat: no-repeat;
     background-size: 100%;
 }
+
+h1{
+    color: black;
+    font-family: arial;
+}
+
+h3{
+    color: black;
+    font-family: arial;
+}
+
+pre{
+    color: black;
+    font-family: arial;
+}
+
+.radio-inline{
+    color: black;
+    font-family: arial;
+}
+
+.btn{
+    color: black;
+    font-family: arial;
+}
