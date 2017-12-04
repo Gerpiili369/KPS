@@ -1,3 +1,28 @@
 body{
     background-image: url(../img/fuckrulla/backgroundnew.jpg);
 }
+
+h1{
+    color: aqua;
+    font-family: impact;
+}
+
+h3{
+    color: aqua;
+    font-family: impact;
+}
+
+pre{
+    color: aqua;
+    font-family: impact;
+}
+
+.radio-inline{
+    color: aqua;
+    font-family: impact;
+}
+
+.btn{
+    color: aqua;
+    font-family: impact;
+}
