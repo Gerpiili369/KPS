@@ -4,5 +4,25 @@ body{
 
 h1{
     color: black;
-    font-family: script;
+    font-family: courier;
+}
+
+h3{
+    color: black;
+    font-family: courier;
+}
+
+pre{
+    color: black;
+    font-family: courier;
+}
+
+.radio-inline{
+    color: black;
+    font-family: courier;
+}
+
+.btn{
+    color: black;
+    font-family: courier;
 }
