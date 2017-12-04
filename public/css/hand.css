@@ -15,14 +15,16 @@ h3{
 pre{
     color: black;
     font-family: courier;
+    background-color: darkgrey;
 }
 
 .radio-inline{
     color: black;
-    font-family: courier;
+    font-family: darkgrey;
 }
 
 .btn{
     color: black;
     font-family: courier;
+    background-color: darkgrey;
 }
