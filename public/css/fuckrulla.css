@@ -24,3 +24,13 @@ pre{
     font-family: impact;
     background-color: green;
 }
+
+.btn-primary{
+    border-color: aqua;
+}
+
+.btn-primary:hover{
+    background-color: green;
+    border-color: aqua;
+    color: aqua;
+}

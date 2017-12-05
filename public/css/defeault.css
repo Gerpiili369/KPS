@@ -23,3 +23,12 @@ pre{
     color: black;
     font-family: arial;
 }
+
+.btn-primary{
+    border-color: black;
+}
+
+.btn-primary:hover{
+    border-color: black;
+    color: black;
+}

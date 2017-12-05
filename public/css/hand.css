@@ -23,3 +23,13 @@ pre{
     font-family: courier;
     background-color: darkgrey;
 }
+
+.btn-primary{
+    border-color: black;
+}
+
+.btn-primary:hover{
+    background-color: darkgrey;
+    border-color: black;
+    color: black;
+}
