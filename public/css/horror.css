@@ -41,7 +41,7 @@ pre{
 }*/
 
 .btn-success:active:focus{
-  color: #060606;
   background-color: #750000;
   border-color: #750000;
+  color: #060606;
 }
