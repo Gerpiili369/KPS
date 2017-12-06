@@ -10,7 +10,6 @@ const host = '127.0.0.1';
 
 const io = require('socket.io')(http);
 const fs = require('fs');
-const game = require('./game.js');
 
 app.use('/', express.static(path.join(__dirname,'public')));
 
