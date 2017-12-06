@@ -76,15 +76,17 @@ io.on('connection', socket => {
                     addOther(socket.name);
                     break;
                 case "friend":
-                    var friend = new Friend();
+                    addFriend(socket,"f1");
                     break;
             }
+        });
 
-            socket.on('choose', data => {
+        socket.on('choose', data => {
+            if (playerlist[socket.name].gameId != null) {
                 console.log(playerlist[socket.name].gameId);
                 gameList[[playerlist[socket.name].gameId]].choose(socket.id,data);
                 gameList[[playerlist[socket.name].gameId]].checkGame();
-            });
+            }
         });
 
         socket.on('disconnect', () => {
@@ -113,17 +115,16 @@ function addOther(username) {
     }
 }
 
-function addFriend(username,friend) {
+function addFriend(socket,friend) {
     if (playerlist[friend] != undefined) {
         if (playerlist[friend].socketId != null) {
-            if (playerlist[friend].gameId = null) {
+            if (playerlist[friend].gameId == null) {
                 gameList.push(gameList.length)
-                gameList[gameList.length-1] = new Game(username,friend);
+                gameList[gameList.length-1] = new Game(socket.name,friend);
 
                 gameList[gameList.length-1].players.forEach(u => {
                     playerlist[u].gameId = gameList.length-1;
                 });
-
 
             } else {
                 socket.emit('msgFromServer', "Friend occupied")
@@ -288,6 +289,8 @@ class Ai extends Game {
 class Friend extends Game {
     constructor(p1,p2) {
         super();
+
+        console.log("Friendly match with: "+this.players);
     }
 }
 
