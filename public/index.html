@@ -17,6 +17,18 @@
             <button type="button" class="btn btn-default" id="namebtn" >Submit</button>
             <h1 id="logindata">Enter username</h1>
         </div>
+
+        <div class="row" id="topbar" hidden="true">
+            <div class="col-xs-4 col-md-4">
+                <h1 id="usertext">Username</h1>
+            </div>
+            <div class="col-xs-4 col-md-4">
+                <pre>Wins: <span class="badge" id="winBad">0</span> Losses: <span class="badge" id="lossBad">0</span> Draws: <span class="badge" id="drawBad">0</span></pre>
+            </div>
+            <div class="col-xs-4 col-md-4">
+                <h1 id="msg">Waiting for opponent...</h1>
+            </div>
+        </div>
         <div class="row text-center" id="mainmenu" hidden="true">
             <div class="col-xs-12 col-md-6">
                 <div class="btn-group-vertical">
@@ -26,19 +38,11 @@
                 </div>
             </div>
         </div>
-        <div class="row" id="topbar" hidden="true">
-            <div class="col-xs-4 col-md-4">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default" id="rockbtn">ROCK</button>
-                    <button type="button" class="btn btn-default" id="paperbtn">PAPER</button>
-                    <button type="button" class="btn btn-default" id="scissorsbtn">SCISSORS</button>
-                </div>
-            </div>
-            <div class="col-xs-4 col-md-4">
-                <pre>Wins: <span class="badge" id="winBad">0</span> Losses: <span class="badge" id="lossBad">0</span> Draws: <span class="badge" id="drawBad">0</span></pre>
-            </div>
-            <div class="col-xs-4 col-md-4">
-                <h1 id="msg">Waiting for opponent...</h1>
+        <div class="row" id="choosebar" hidden="true">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default" id="rockbtn">ROCK</button>
+                <button type="button" class="btn btn-default" id="paperbtn">PAPER</button>
+                <button type="button" class="btn btn-default" id="scissorsbtn">SCISSORS</button>
             </div>
         </div>
         <div class="row" id="resultarea" hidden="true">

@@ -11,7 +11,7 @@ function initialize() {
     socket.on('loginSucc', (data) => {
         htmlEdit("logindata",data);
 
-        updateVisibility(["mainmenu"],["login"])
+        updateVisibility(["mainmenu","topbar"],["login"])
     });
 
     socket.on('loginFail', (data) => {
@@ -19,7 +19,7 @@ function initialize() {
     });
 
     socket.on('startGame', () => {
-        updateVisibility(["topbar","resultarea"],["mainmenu"]);
+        updateVisibility(["choosebar","resultarea"],["mainmenu"]);
     });
 
     socket.on('toMainMenu', () => {
