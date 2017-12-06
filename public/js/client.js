@@ -11,16 +11,24 @@ function initialize() {
     socket.on('loginSucc', (data) => {
         htmlEdit("logindata",data);
 
-        updateVisibility(["topbar","resultarea"],["login"])
+        updateVisibility(["mainmenu"],["login"])
     });
 
     socket.on('loginFail', (data) => {
         htmlEdit("logindata",data);
     });
 
+    socket.on('startGame', () => {
+        updateVisibility(["topbar","resultarea"],["mainmenu"]);
+    });
+
+    socket.on('toMainMenu', () => {
+        updateVisibility(["mainmenu"],["topbar","resultarea"]);
+    });
+
     socket.on('msgFromServer', (data) => {
         htmlEdit("msg",data);
-    })
+    });
 
     socket.on('result', (player, opponent) => {
         mem.player = player;
@@ -59,7 +67,6 @@ function initialize() {
     }
 
     function addClickEmit(id,socket,eventName,data) {
-        console.log(id,eventName,data);
         document.getElementById(id).addEventListener("click", () => socket.emit(eventName, data));
     }
 

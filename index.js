@@ -14,9 +14,9 @@ const game = require('./game.js');
 
 app.use('/', express.static(path.join(__dirname,'public')));
 
-let players = {p1: null, p2: null};
 let que = [];
 var playerlist = {};
+var gameList = [];
 
 if (fs.existsSync('serverData/playerlist.json')) {
     fs.readFile('serverData/playerlist.json', 'utf-8', (err, data) => {
@@ -24,6 +24,7 @@ if (fs.existsSync('serverData/playerlist.json')) {
 
         Object.keys(playerlist).forEach(username => {
             playerlist[username].socketId = null;
+            playerlist[username].gameId = null;
         });
     });
 }
@@ -37,6 +38,7 @@ io.on('connection', socket => {
                 selection: null,
                 result: null,
                 socket: null,
+                gameId: null,
                 games: 0,
                 points: {
                     wins: 0,
@@ -63,128 +65,231 @@ io.on('connection', socket => {
         socket.name = username;
 
         playerlist[socket.name].socketId = socket.id;
-        que.push(socket.name);
         socket.emit('loginSucc');
 
-        updatePlayers();
-
-        socket.on('choose', data => {
-            if (playerlist[players.p1].socketId == socket.id) {
-                playerlist[players.p1].selection = data;
-                io.to(playerlist[players.p2].socketId).emit('msgFromServer', "Ready");
-                console.log("["+players.p1+"] chose "+data);
-            } else if (playerlist[players.p2].socketId == socket.id) {
-                playerlist[players.p2].selection = data;
-                io.to(playerlist[players.p1].socketId).emit('msgFromServer', "Ready");
-                console.log("["+players.p2+"] chose "+data);
+        socket.on('setMode', data => {
+            console.log("setmode is "+data);
+            switch (data) {
+                case "ai":
+                    var ai = new Ai(socket.name);
+                    break;
+                case "other":
+                    addOther(socket.name);
+                    break;
+                case "friend":
+                    var friend = new Friend();
+                    break;
             }
 
-            if (playerlist[players.p1].selection != null && playerlist[players.p2].selection != null) {
-                let result = game.decider(playerlist[players.p1].selection, playerlist[players.p2].selection);
-
-                if (result == 'p1') {
-                    playerlist[players.p1].points.wins ++;
-                    playerlist[players.p1].total.wins ++;
-                    playerlist[players.p1].result = "win";
-                    playerlist[players.p2].points.losses ++;
-                    playerlist[players.p2].total.losses ++;
-                    playerlist[players.p2].result = "defeat";
-                    console.log("["+players.p1+"] has won the round");
-                } else if (result == 'p2') {
-                    playerlist[players.p1].points.losses ++;
-                    playerlist[players.p1].total.losses ++;
-                    playerlist[players.p1].result = "defeat";
-                    playerlist[players.p2].points.wins ++;
-                    playerlist[players.p2].total.wins ++;
-                    playerlist[players.p2].result = "win";
-                    console.log("["+players.p2+"] has won the round");
-                } else if (result == 'draw') {
-                    playerlist[players.p1].points.draws ++;
-                    playerlist[players.p1].total.draws ++;
-                    playerlist[players.p1].result = "draw";
-                    playerlist[players.p2].points.draws ++;
-                    playerlist[players.p2].total.draws ++;
-                    playerlist[players.p2].result = "draw";
-                    console.log("The round was a draw");
-                }
-
-                Object.keys(players).forEach(p => {
-                    let otherP;
-                    if (p == "p1") {otherP = "p2"} else if (p == "p2") {otherP = "p1"}
-
-                    playerlist[players[p]].games ++
-                    io.to(playerlist[players[p]].socketId).emit('result', playerlist[players[p]], playerlist[players[otherP]].selection);
-                });
-
-                Object.keys(players).forEach(p => {
-                    playerlist[players[p]].selection = null;
-                    playerlist[players[p]].result = null;
-
-                    io.to(playerlist[players[p]].socketId).emit('msgFromServer', "New round!");
-                });
-
-                console.log("A new round has been started!");
-            }
+            socket.on('choose', data => {
+                console.log(playerlist[socket.name].gameId);
+                gameList[[playerlist[socket.name].gameId]].choose(socket.id,data);
+                gameList[[playerlist[socket.name].gameId]].checkGame();
+            });
         });
 
         socket.on('disconnect', () => {
-            if (playerlist[players.p1].socketId == socket.id) {
-                resetGame("p1");
-
-                io.to(playerlist[players.p2].socketId).emit('msgFromServer', "Opponent left");
-                console.log("["+players.p1+"] left");
-            } else if (playerlist[players.p2].socketId == socket.id) {
-                resetGame("p2");
-
-                io.to(playerlist[players.p1].socketId).emit('msgFromServer', "Opponent left");
-                console.log("["+players.p2+"] left");
+            if (playerlist[socket.name].gameId != null) {
+                gameList[[playerlist[socket.name].gameId]].disconnect(socket.name);
             } else {
                 que.splice(que.indexOf(socket.name), 1);
             }
 
             playerlist[socket.name].socketId = null;
-            updatePlayers();
         });
     }
 });
 
-function updatePlayers() {
-    if (que[0] != undefined) {
-        if (players.p1 == null) {
-            players.p1 = que.shift();
-            console.log("["+players.p1+"] joined as Player 1");
-        } else if (players.p2 == null) {
-            players.p2 = que.shift();
-            console.log("["+players.p2+"] joined as Player 2");
-        }
+function addOther(username) {
+    que.push(username);
 
-        if (que[0] != undefined) {
-            que.forEach(username => {
-                io.to(playerlist[username].socketId).emit('msgFromServer', 'Game full!');
-            });
+    if (que.length > 1) {
+        console.log("que has more 2");
+        gameList.push(gameList.length)
+        gameList[gameList.length-1] = new Game(que.shift(),que.shift());
 
-            console.log("Players in game: "+players.p1+" Vs. "+players.p2);
-            console.log("Players in que: "+que.length);
-        }
-    }
-
-    if (players.p1 != null && players.p2 != null) {
-        Object.keys(players).forEach(p => {
-            io.to(playerlist[players[p]].socketId).emit('msgFromServer', "Opponent found!");
+        gameList[gameList.length-1].players.forEach(u => {
+            playerlist[u].gameId = gameList.length-1;
         });
     }
+}
 
+function addFriend(username,friend) {
+    if (playerlist[friend] != undefined) {
+        if (playerlist[friend].socketId != null) {
+            if (playerlist[friend].gameId = null) {
+                gameList.push(gameList.length)
+                gameList[gameList.length-1] = new Game(username,friend);
+
+                gameList[gameList.length-1].players.forEach(u => {
+                    playerlist[u].gameId = gameList.length-1;
+                });
+
+
+            } else {
+                socket.emit('msgFromServer', "Friend occupied")
+            }
+        } else {
+            socket.emit('msgFromServer', "Friend offline")
+        }
+    } else {
+        socket.emit('msgFromServer', "Friend doesn't exist")
+    }
+}
+
+function updateJSON() {
     fs.writeFile('serverData/playerlist.json', JSON.stringify(playerlist), err => {if (err) console.log(err)});
 }
 
-function resetGame(p) {
-    Object.keys(players).forEach(p => {
-        playerlist[players[p]].games = 0;
-        playerlist[players[p]].points = {wins: 0, losses: 0, draws: 0};
-    });
+class Game {
+    constructor(p1,p2) {
+        this.players = [p1,p2];
+        this.id = gameList.length-1
 
-    playerlist[players[p]].socketId = null;
-    players[p] = null;
+        this.players.forEach(p => {
+            io.to(playerlist[p].socketId).emit('msgFromServer', "Opponent found!");
+
+            io.to(playerlist[p].socketId).emit('startGame');
+        });
+        console.log(this.id+" => game crated with "+this.players);
+    }
+
+    choose(id,data) {
+        if (playerlist[this.players[0]].socketId == id) {
+            playerlist[this.players[0]].selection = data;
+            io.to(playerlist[this.players[1]].socketId).emit('msgFromServer', "Ready");
+            console.log(this.id+" => ["+this.players[0]+"] chose "+data);
+        } else if (playerlist[this.players[1]].socketId == id) {
+            playerlist[this.players[1]].selection = data;
+            io.to(playerlist[this.players[0]].socketId).emit('msgFromServer', "Ready");
+            console.log(this.id+" => ["+this.players[1]+"] chose "+data);
+        }
+    }
+
+    checkGame() {
+        if (playerlist[this.players[0]].selection != null && playerlist[this.players[1]].selection != null) {
+            this.result = this.decider(playerlist[this.players[0]].selection, playerlist[this.players[1]].selection);
+
+            if (this.result == 'p1') {
+                playerlist[this.players[0]].points.wins ++;
+                playerlist[this.players[0]].total.wins ++;
+                playerlist[this.players[0]].result = "win";
+                playerlist[this.players[1]].points.losses ++;
+                playerlist[this.players[1]].total.losses ++;
+                playerlist[this.players[1]].result = "defeat";
+                console.log(this.id+" => ["+this.players[0]+"] has won the round");
+            } else if (this.result == 'p2') {
+                playerlist[this.players[0]].points.losses ++;
+                playerlist[this.players[0]].total.losses ++;
+                playerlist[this.players[0]].result = "defeat";
+                playerlist[this.players[1]].points.wins ++;
+                playerlist[this.players[1]].total.wins ++;
+                playerlist[this.players[1]].result = "win";
+                console.log(this.id+" => ["+this.players[1]+"] has won the round");
+            } else if (this.result == 'draw') {
+                playerlist[this.players[0]].points.draws ++;
+                playerlist[this.players[0]].total.draws ++;
+                playerlist[this.players[0]].result = "draw";
+                playerlist[this.players[1]].points.draws ++;
+                playerlist[this.players[1]].total.draws ++;
+                playerlist[this.players[1]].result = "draw";
+                console.log(this.id+" => The round was a draw");
+            }
+
+            this.players.forEach(p => {
+                p = this.players.indexOf(p)
+                let otherP;
+                if (p == 0) {
+                    otherP = 1
+                } else if (p == 1) {
+                    otherP = 0
+                }
+
+                playerlist[this.players[p]].games ++
+                io.to(playerlist[this.players[p]].socketId).emit('result', playerlist[this.players[p]], playerlist[this.players[otherP]].selection);
+            });
+
+            this.players.forEach(p => {
+                playerlist[p].selection = null;
+                playerlist[p].result = null;
+
+                io.to(playerlist[p].socketId).emit('msgFromServer', "New round!");
+            });
+
+            console.log(this.id+" => A new round has been started!");
+
+            updateJSON();
+        }
+    }
+
+    decider(p1, p2) {
+        if (p1==='rock') {
+            if (p2==='rock') {
+                return 'draw';
+            } else if (p2==='paper') {
+                return 'p2';
+            } else {
+                return 'p1';
+            }
+        } else if (p1==='paper') {
+            if (p2==='rock') {
+                return 'p1';
+            } else if (p2==='paper') {
+                return 'draw';
+            } else {
+                return 'p2';
+            }
+        } else {
+            if (p2==='rock') {
+                return 'p2';
+            } else if (p2==='paper') {
+                return 'p1';
+            } else {
+                return 'draw';
+            }
+        }
+    }
+
+    disconnect(username) {
+        if (username == this.players[0]) {
+            io.to(playerlist[this.players[1]].socketId).emit('msgFromServer', "Opponent left");
+            console.log(this.id+" => ["+this.players[0]+"] left");
+        } else if (username == this.players[1]) {
+            io.to(playerlist[this.players[0]].socketId).emit('msgFromServer', "Opponent left");
+            console.log(this.id+" => ["+this.players[1]+"] left");
+        }
+
+        this.resetGame();
+        updateJSON();
+    }
+
+    resetGame() {
+        this.players.forEach(p => {
+            playerlist[p].games = 0;
+            playerlist[p].points = {wins: 0, losses: 0, draws: 0};
+            playerlist[p].gameId = null;
+            this.players[p] = null;
+
+            io.to(playerlist[p].socketId).emit('toMainMenu');
+        });
+    }
+}
+
+class Ai extends Game {
+    constructor(player) {
+        super();
+
+        this.players = [player]
+        this.choices = ['rock','paper','scissors'];
+
+        this.computer = choices[Math.floor(Math.random()*choices.length)];
+    }
+}
+
+class Friend extends Game {
+    constructor(p1,p2) {
+        super();
+    }
 }
 
 http.listen(port,host, ()=>
