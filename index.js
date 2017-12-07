@@ -116,24 +116,28 @@ function addOther(username) {
 }
 
 function addFriend(socket,friend) {
-    if (playerlist[friend] != undefined) {
-        if (playerlist[friend].socketId != null) {
-            if (playerlist[friend].gameId == null) {
-                gameList.push(gameList.length)
-                gameList[gameList.length-1] = new Game(socket.name,friend);
+    if (friend != socket.name) {
+        if (playerlist[friend] != undefined) {
+            if (playerlist[friend].socketId != null) {
+                if (playerlist[friend].gameId == null) {
+                    gameList.push(gameList.length)
+                    gameList[gameList.length-1] = new Game(socket.name,friend);
 
-                gameList[gameList.length-1].players.forEach(u => {
-                    playerlist[u].gameId = gameList.length-1;
-                });
+                    gameList[gameList.length-1].players.forEach(u => {
+                        playerlist[u].gameId = gameList.length-1;
+                    });
 
+                } else {
+                    socket.emit('msgFromServer', "Friend occupied")
+                }
             } else {
-                socket.emit('msgFromServer', "Friend occupied")
+                socket.emit('msgFromServer', "Friend offline")
             }
         } else {
-            socket.emit('msgFromServer', "Friend offline")
+            socket.emit('msgFromServer', "Friend doesn't exist")
         }
     } else {
-        socket.emit('msgFromServer', "Friend doesn't exist")
+        socket.emit('msgFromServer', "You can't play against yourself")
     }
 }
 
