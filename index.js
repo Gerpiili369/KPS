@@ -65,7 +65,7 @@ io.on('connection', socket => {
         socket.name = username;
 
         playerlist[socket.name].socketId = socket.id;
-        socket.emit('loginSucc');
+        socket.emit('loginSucc', playerlist[socket.name]);
 
         socket.on('setMode', data => {
             console.log("setmode is "+data);

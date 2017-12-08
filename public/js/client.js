@@ -8,8 +8,8 @@ function initialize() {
     updateVisuals(theme);
     addSomeListeners(socket);
 
-    socket.on('loginSucc', (data) => {
-        htmlEdit("logindata",data);
+    socket.on('loginSucc', (player) => {
+        htmlEdit("usertext", player.username);
 
         updateVisibility(["mainmenu","topbar"],["login"])
     });
