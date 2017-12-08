@@ -68,7 +68,7 @@ io.on('connection', socket => {
         socket.emit('loginSucc', playerlist[socket.name]);
 
         socket.on('setMode', data => {
-            console.log("setmode is "+data);
+            console.log("["+socket.name+"] set mode to \""+data+"\"");
             switch (data) {
                 case "ai":
                     var ai = new Ai(socket.name);
@@ -165,11 +165,11 @@ class Game {
         if (playerlist[this.players[0]].socketId == id) {
             playerlist[this.players[0]].selection = data;
             io.to(playerlist[this.players[1]].socketId).emit('msgFromServer', "Ready");
-            console.log(this.id+" => ["+this.players[0]+"] chose "+data);
+            console.log("("+this.id+") ["+this.players[0]+"] chose "+data);
         } else if (playerlist[this.players[1]].socketId == id) {
             playerlist[this.players[1]].selection = data;
             io.to(playerlist[this.players[0]].socketId).emit('msgFromServer', "Ready");
-            console.log(this.id+" => ["+this.players[1]+"] chose "+data);
+            console.log("("+this.id+") ["+this.players[1]+"] chose "+data);
         }
     }
 
@@ -184,7 +184,7 @@ class Game {
                 playerlist[this.players[1]].points.losses ++;
                 playerlist[this.players[1]].total.losses ++;
                 playerlist[this.players[1]].result = "defeat";
-                console.log(this.id+" => ["+this.players[0]+"] has won the round");
+                console.log("("+this.id+") ["+this.players[0]+"] has won the round");
             } else if (this.result == 'p2') {
                 playerlist[this.players[0]].points.losses ++;
                 playerlist[this.players[0]].total.losses ++;
@@ -192,7 +192,7 @@ class Game {
                 playerlist[this.players[1]].points.wins ++;
                 playerlist[this.players[1]].total.wins ++;
                 playerlist[this.players[1]].result = "win";
-                console.log(this.id+" => ["+this.players[1]+"] has won the round");
+                console.log("("+this.id+") ["+this.players[1]+"] has won the round");
             } else if (this.result == 'draw') {
                 playerlist[this.players[0]].points.draws ++;
                 playerlist[this.players[0]].total.draws ++;
@@ -260,10 +260,10 @@ class Game {
     disconnect(username) {
         if (username == this.players[0]) {
             io.to(playerlist[this.players[1]].socketId).emit('msgFromServer', "Opponent left");
-            console.log(this.id+" => ["+this.players[0]+"] left");
+            console.log("("+this.id+") ["+this.players[0]+"] left");
         } else if (username == this.players[1]) {
             io.to(playerlist[this.players[0]].socketId).emit('msgFromServer', "Opponent left");
-            console.log(this.id+" => ["+this.players[1]+"] left");
+            console.log("("+this.id+") ["+this.players[1]+"] left");
         }
 
         this.resetGame();
