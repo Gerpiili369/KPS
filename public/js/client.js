@@ -34,9 +34,7 @@ function initialize() {
         mem.player = player;
         mem.opponent = opponent;
 
-        document.getElementById("winBad").innerHTML = player.total.wins;
-        document.getElementById("drawBad").innerHTML = player.total.draws;
-        document.getElementById("lossBad").innerHTML =  player.total.losses;
+        updateTotal(player.total);
 
         document.getElementById("winBar").style = "width: "+(player.points.wins/player.games*100)+"%";
         document.getElementById("drawBar").style = "width: "+(player.points.draws/player.games*100)+"%";
@@ -84,6 +82,12 @@ function initialize() {
             hidden.forEach(e => {
                 document.getElementById(e).hidden = true;
             });
+    }
+
+    function updateTotal(total) {
+        document.getElementById("winBad").innerHTML = total.wins;
+        document.getElementById("drawBad").innerHTML = total.draws;
+        document.getElementById("lossBad").innerHTML = total.losses;
     }
 
     function updateVisuals(theme) {
