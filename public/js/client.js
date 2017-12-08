@@ -25,7 +25,7 @@ function initialize() {
     });
 
     socket.on('toMainMenu', () => {
-        updateVisibility(["mainmenu"],["topbar","resultarea"]);
+        updateVisibility(["mainmenu"],["choosebar","resultarea"]);
     });
 
     socket.on('msgFromServer', (data) => {
