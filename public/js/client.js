@@ -11,6 +11,8 @@ function initialize() {
     socket.on('loginSucc', (player) => {
         htmlEdit("usertext", player.username);
 
+        updateTotal(player.total);
+
         updateVisibility(["mainmenu","topbar"],["login"])
     });
 
