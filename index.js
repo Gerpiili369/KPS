@@ -34,6 +34,7 @@ io.on('connection', socket => {
             socket.emit('loginFail', "Username is empty!")
         } else if (playerlist[username] == undefined) {
             playerlist[username] = {
+                username: username,
                 selection: null,
                 result: null,
                 socket: null,
