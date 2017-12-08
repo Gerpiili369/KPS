@@ -103,7 +103,9 @@ io.on('connection', socket => {
 });
 
 function addOther(username) {
-    que.push(username);
+    if (que.indexOf(username) == -1) {
+        que.push(username);
+    }
 
     if (que.length > 1) {
         console.log("que has more 2");
