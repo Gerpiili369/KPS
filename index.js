@@ -37,7 +37,7 @@ io.on('connection', socket => {
                 username: username,
                 selection: null,
                 result: null,
-                socket: null,
+                socketId: null,
                 gameId: null,
                 games: 0,
                 points: {
