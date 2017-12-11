@@ -3,3 +3,32 @@ body{
     background-repeat: no-repeat;
     background-size: 100%;
 }
+
+h1{
+    color: black;
+    font-family: arial;
+}
+
+h3{
+    color: black;
+    font-family: arial;
+}
+
+pre{
+    color: black;
+    font-family: arial;
+}
+
+.btn{
+    color: black;
+    font-family: arial;
+}
+
+.btn-primary{
+    border-color: black;
+}
+
+.btn-primary:hover{
+    border-color: black;
+    color: black;
+}

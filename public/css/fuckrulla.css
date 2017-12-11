@@ -1,3 +1,36 @@
 body{
     background-image: url(../img/fuckrulla/backgroundnew.jpg);
 }
+
+h1{
+    color: aqua;
+    font-family: impact;
+}
+
+h3{
+    color: aqua;
+    font-family: impact;
+}
+
+pre{
+    color: aqua;
+    font-family: impact;
+    background-color: green;
+
+}
+
+.btn{
+    color: aqua;
+    font-family: impact;
+    background-color: green;
+}
+
+.btn-primary{
+    border-color: aqua;
+}
+
+.btn-primary:hover{
+    background-color: green;
+    border-color: aqua;
+    color: aqua;
+}

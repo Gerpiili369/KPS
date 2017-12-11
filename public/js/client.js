@@ -32,6 +32,10 @@ function initialize() {
         theme = "fuckrulla";
         updateVisuals(theme);
     });
+    document.getElementById('handactive').addEventListener("click", ()=> {
+        theme = "hand";
+        updateVisuals(theme);
+    });
 
     socket.on('loginSucc', (data) => {
         document.getElementById("logindata").innerHTML = data;
