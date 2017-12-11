@@ -114,7 +114,12 @@ function addOther(username) {
 
         gameList[gameList.length-1].players.forEach(p => {
             playerlist[p].gameId = gameList.length-1;
+
+            io.to(playerlist[p].socketId).emit('msgFromServer', "Opponent found!");
+            io.to(playerlist[p].socketId).emit('startGame');
         });
+
+        console.log(this.id+" => game crated with "+this.players);
     }
 }
 
@@ -128,8 +133,12 @@ function addFriend(socket,friend) {
 
                     gameList[gameList.length-1].players.forEach(u => {
                         playerlist[u].gameId = gameList.length-1;
+
+                        io.to(playerlist[p].socketId).emit('msgFromServer', "Friend found!");
+                        io.to(playerlist[p].socketId).emit('startGame');
                     });
 
+                    console.log("Friendly match with: "+this.players);
                 } else {
                     socket.emit('msgFromServer', "Friend occupied")
                 }
@@ -152,13 +161,6 @@ class Game {
     constructor(p1,p2) {
         this.players = [p1,p2];
         this.id = gameList.length-1
-
-        this.players.forEach(p => {
-            io.to(playerlist[p].socketId).emit('msgFromServer', "Opponent found!");
-
-            io.to(playerlist[p].socketId).emit('startGame');
-        });
-        console.log(this.id+" => game crated with "+this.players);
     }
 
     choose(id,data) {
@@ -296,8 +298,6 @@ class Ai extends Game {
 class Friend extends Game {
     constructor(p1,p2) {
         super();
-
-        console.log("Friendly match with: "+this.players);
     }
 }
 
