@@ -110,16 +110,19 @@ function addOther(username) {
     if (que.length > 1) {
         console.log("que has more 2");
         gameList.push(gameList.length)
-        gameList[gameList.length-1] = new Game(que.shift(),que.shift());
 
-        gameList[gameList.length-1].players.forEach(p => {
-            playerlist[p].gameId = gameList.length-1;
+        let newGameId = gameList.length-1
+
+        gameList[newGameId] = new Game(que.shift(),que.shift(),newGameId);
+
+        gameList[newGameId].players.forEach(p => {
+            playerlist[p].gameId = newGameId;
 
             io.to(playerlist[p].socketId).emit('msgFromServer', "Opponent found!");
             io.to(playerlist[p].socketId).emit('startGame');
         });
 
-        console.log(this.id+" => game crated with "+this.players);
+        console.log(newGameId+" => Game crated with "+gameList[newGameId].players);
     }
 }
 
@@ -129,16 +132,19 @@ function addFriend(socket,friend) {
             if (playerlist[friend].socketId != null) {
                 if (playerlist[friend].gameId == null) {
                     gameList.push(gameList.length)
-                    gameList[gameList.length-1] = new Game(socket.name,friend);
 
-                    gameList[gameList.length-1].players.forEach(u => {
-                        playerlist[u].gameId = gameList.length-1;
+                    let newGameId = gameList.length-1
+
+                    gameList[newGameId] = new Game(socket.name,friend,newGameId);
+
+                    gameList[newGameId].players.forEach(p => {
+                        playerlist[p].gameId = newGameId;
 
                         io.to(playerlist[p].socketId).emit('msgFromServer', "Friend found!");
                         io.to(playerlist[p].socketId).emit('startGame');
                     });
 
-                    console.log("Friendly match with: "+this.players);
+                    console.log("Friendly match with: "+gameList[newGameId].players);
                 } else {
                     socket.emit('msgFromServer', "Friend occupied")
                 }
@@ -158,9 +164,9 @@ function updateJSON() {
 }
 
 class Game {
-    constructor(p1,p2) {
+    constructor(p1,p2,id) {
         this.players = [p1,p2];
-        this.id = gameList.length-1
+        this.id = id;
     }
 
     choose(id,data) {
@@ -296,7 +302,7 @@ class Ai extends Game {
 }
 
 class Friend extends Game {
-    constructor(p1,p2) {
+    constructor(p1,p2,id) {
         super();
     }
 }
