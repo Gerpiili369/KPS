@@ -23,25 +23,3 @@ pre{
     font-family: eater;
     background-color: #060606;
 }
-
-.btn-primary{
-    border-color: #750000;
-}
-
-.btn-primary:hover{
-    background-color: #060606;
-    border-color: #750000;
-    color: #750000;
-}
-
-/*.btn-success:hover, .btn-success:active, .btn-success:focus {
-  color: #060606 !important;
-  background-color: #750000 !important;
-  border-color: #750000 !important;
-}*/
-
-.btn-success:active:focus{
-  background-color: #750000;
-  border-color: #750000;
-  color: #060606;
-}
