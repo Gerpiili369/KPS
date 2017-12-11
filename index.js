@@ -84,7 +84,6 @@ io.on('connection', socket => {
 
         socket.on('choose', data => {
             if (playerlist[socket.name].gameId != null) {
-                console.log(playerlist[socket.name].gameId);
                 gameList[[playerlist[socket.name].gameId]].choose(socket.id,data);
                 gameList[[playerlist[socket.name].gameId]].checkGame();
             }
@@ -108,7 +107,6 @@ function addOther(username) {
     }
 
     if (que.length > 1) {
-        console.log("que has more 2");
         gameList.push(gameList.length)
 
         let newGameId = gameList.length-1
@@ -122,7 +120,7 @@ function addOther(username) {
             io.to(playerlist[p].socketId).emit('startGame');
         });
 
-        console.log(newGameId+" => Game crated with "+gameList[newGameId].players);
+        console.log("("+newGameId+") => Game crated with "+gameList[newGameId].players);
     }
 }
 
@@ -144,7 +142,7 @@ function addFriend(socket,friend) {
                         io.to(playerlist[p].socketId).emit('startGame');
                     });
 
-                    console.log("Friendly match with: "+gameList[newGameId].players);
+                    console.log("("+newGameId+") Friendly match with: "+gameList[newGameId].players);
                 } else {
                     socket.emit('msgFromServer', "Friend occupied")
                 }
@@ -208,7 +206,7 @@ class Game {
                 playerlist[this.players[1]].points.draws ++;
                 playerlist[this.players[1]].total.draws ++;
                 playerlist[this.players[1]].result = "draw";
-                console.log(this.id+" => The round was a draw");
+                console.log("("+this.id+") => The round was a draw");
             }
 
             this.players.forEach(p => {
@@ -231,7 +229,7 @@ class Game {
                 io.to(playerlist[p].socketId).emit('msgFromServer', "New round!");
             });
 
-            console.log(this.id+" => A new round has been started!");
+            console.log("("+this.id+") => A new round has been started!");
 
             updateJSON();
         }
