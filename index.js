@@ -17,6 +17,26 @@ let que = [];
 var playerlist = {};
 var gameList = [];
 
+playerlist.computer = {
+    //username: "computer",
+    selection: null,
+    result: null,
+    socketId: 69696969669696969,
+    gameId: null,
+    games: 0,
+    points: {
+        wins: 0,
+        losses: 0,
+        draws: 0
+    },
+    total: {
+        wins: 0,
+        losses: 0,
+        draws: 0,
+        games: 0
+    }
+};
+
 if (fs.existsSync('serverData/playerlist.json')) {
     fs.readFile('serverData/playerlist.json', 'utf-8', (err, data) => {
         playerlist = JSON.parse(data);
@@ -71,7 +91,7 @@ io.on('connection', socket => {
             console.log("["+socket.name+"] set mode to \""+data+"\"");
             switch (data) {
                 case "ai":
-                    var ai = new Ai(socket.name);
+                    addAi(socket)
                     break;
                 case "other":
                     addOther(socket.name);
@@ -100,6 +120,21 @@ io.on('connection', socket => {
         });
     }
 });
+
+function addAi(socket) {
+    gameList.push(gameList.length)
+
+    let newGameId = gameList.length-1
+
+    gameList[newGameId] = new Ai(socket,newGameId);
+
+    playerlist[socket.name].gameId = newGameId;
+
+    io.to(playerlist[socket.name].socketId).emit('msgFromServer', "Game versus computer started");
+    io.to(playerlist[socket.name].socketId).emit('startGame');
+
+    console.log("("+newGameId+") => "+socket.name+" started AI game");
+}
 
 function addOther(username) {
     if (que.indexOf(username) == -1) {
@@ -289,13 +324,16 @@ class Game {
 }
 
 class Ai extends Game {
-    constructor(player) {
+    constructor(socket,id) {
         super();
 
-        this.players = [player]
+        this.players = [socket.name,'computer'];
         this.choices = ['rock','paper','scissors'];
 
-        this.computer = choices[Math.floor(Math.random()*choices.length)];
+        socket.on('choose', () => {
+            playerlist.computer.selection = this.choices[Math.floor(Math.random()*this.choices.length)];
+            this.checkGame();
+        });
     }
 }
 
