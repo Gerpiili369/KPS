@@ -112,8 +112,8 @@ function addOther(username) {
         gameList.push(gameList.length)
         gameList[gameList.length-1] = new Game(que.shift(),que.shift());
 
-        gameList[gameList.length-1].players.forEach(u => {
-            playerlist[u].gameId = gameList.length-1;
+        gameList[gameList.length-1].players.forEach(p => {
+            playerlist[p].gameId = gameList.length-1;
         });
     }
 }
