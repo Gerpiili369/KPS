@@ -131,7 +131,7 @@ function addAi(socket) {
     playerlist[socket.name].gameId = newGameId;
 
     io.to(playerlist[socket.name].socketId).emit('msgFromServer', "Game versus computer started");
-    io.to(playerlist[socket.name].socketId).emit('startGame');
+    io.to(playerlist[socket.name].socketId).emit('startGame', "Computer");
 
     console.log("("+newGameId+") ["+socket.name+"] started AI game");
 }
@@ -151,8 +151,18 @@ function addOther(username) {
         gameList[newGameId].players.forEach(p => {
             playerlist[p].gameId = newGameId;
 
+            let otherP;
+            switch (gameList[newGameId].players.indexOf(p)) {
+                case 0:
+                    otherP = 1;
+                    break;
+                case 1:
+                    otherP = 0;
+                    break;
+            }
+
             io.to(playerlist[p].socketId).emit('msgFromServer', "Opponent found!");
-            io.to(playerlist[p].socketId).emit('startGame');
+            io.to(playerlist[p].socketId).emit('startGame', gameList[newGameId].players[otherP]);
         });
 
         console.log("("+newGameId+") Game crated with "+gameList[newGameId].players);
@@ -173,8 +183,18 @@ function addFriend(socket,friend) {
                     gameList[newGameId].players.forEach(p => {
                         playerlist[p].gameId = newGameId;
 
+                        let otherP;
+                        switch (gameList[newGameId].players.indexOf(p)) {
+                            case 0:
+                                otherP = 1;
+                                break;
+                            case 1:
+                                otherP = 0;
+                                break;
+                        }
+
                         io.to(playerlist[p].socketId).emit('msgFromServer', "Friend found!");
-                        io.to(playerlist[p].socketId).emit('startGame');
+                        io.to(playerlist[p].socketId).emit('startGame', gameList[newGameId].players[otherP]);
                     });
 
                     console.log("("+newGameId+") Friendly match with: "+gameList[newGameId].players);

@@ -19,7 +19,8 @@ function initialize() {
         htmlEdit("logindata",data);
     });
 
-    socket.on('startGame', () => {
+    socket.on('startGame', (data) => {
+        htmlEdit("opponent",data);
         updateVisibility(["choosebar","gamearea"],["mainmenu"]);
     });
 
