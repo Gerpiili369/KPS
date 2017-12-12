@@ -1,3 +1,35 @@
 body{
-    background-image: url(../img/handbackgroundnew.jpg);
+    background-image: url(../img/hand/backgroundnew.jpg);
+}
+
+h1{
+    color: black;
+    font-family: courier;
+}
+
+h3{
+    color: black;
+    font-family: courier;
+}
+
+pre{
+    color: black;
+    font-family: courier;
+    background-color: darkgrey;
+}
+
+.btn{
+    color: black;
+    font-family: courier;
+    background-color: darkgrey;
+}
+
+.btn-primary{
+    border-color: black;
+}
+
+.btn-primary:hover{
+    background-color: darkgrey;
+    border-color: black;
+    color: black;
 }

@@ -10,7 +10,6 @@ function initialize() {
 
     socket.on('loginSucc', (player) => {
         htmlEdit("usertext", player.username);
-
         updateTotal(player.total);
 
         updateVisibility(["mainmenu","topbar"],["login"])
@@ -64,6 +63,7 @@ function initialize() {
         addClickTheme('classicactivate',"defeault");
         addClickTheme('horroractivate',"horror");
         addClickTheme('fuckrullaactivate',"fuckrulla");
+        addClickTheme('handactivate',"hand");
     }
 
     function htmlEdit(id,data) {

@@ -10,6 +10,8 @@
         <script src="/socket.io/socket.io.js"></script>
         <script src="js/client.js"></script>
         <script src='http://use.edgefonts.net/eater.js'></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     </head>
     <body>
         <div id="login">
@@ -85,10 +87,15 @@
             <div id="drawBar" class="progress-bar progress-bar-warning progress-bar-striped active" style=""></div>
             <div id="lossBar" class="progress-bar progress-bar-danger progress-bar-striped active" style=""></div>
         </div>
-        <div>
-            <label class="radio-inline"><input type="radio" id="classicactivate" name="themeradio" checked="checked">Classic</label>
-            <label class="radio-inline"><input type="radio" id="horroractivate" name="themeradio">Horror</label>
-            <label class="radio-inline"><input type="radio" id="fuckrullaactivate" name="themeradio">RullaMode</label>
-        </div>
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Theme
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li><a id="classicactivate">Classic</a></li>
+                    <li><a id="horroractivate">Horror</a></li>
+                    <li><a id="fuckrullaactivate">Space</a></li>
+                    <li><a id="handactive">Hand</a></li>
+                </ul>
+            </div>
     </body>
 </html>
