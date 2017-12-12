@@ -88,7 +88,7 @@ io.on('connection', socket => {
         socket.emit('loginSucc', playerlist[socket.name]);
 
         socket.on('setMode', (data,extra) => {
-            console.log("["+socket.name+"] set mode to \""+data+"\"");
+            console.log("(M) ["+socket.name+"] set mode to \""+data+"\"");
             switch (data) {
                 case "ai":
                     addAi(socket)
@@ -133,7 +133,7 @@ function addAi(socket) {
     io.to(playerlist[socket.name].socketId).emit('msgFromServer', "Game versus computer started");
     io.to(playerlist[socket.name].socketId).emit('startGame');
 
-    console.log("("+newGameId+") => "+socket.name+" started AI game");
+    console.log("("+newGameId+") ["+socket.name+"] started AI game");
 }
 
 function addOther(username) {
@@ -155,7 +155,7 @@ function addOther(username) {
             io.to(playerlist[p].socketId).emit('startGame');
         });
 
-        console.log("("+newGameId+") => Game crated with "+gameList[newGameId].players);
+        console.log("("+newGameId+") Game crated with "+gameList[newGameId].players);
     }
 }
 
@@ -241,7 +241,7 @@ class Game {
                 playerlist[this.players[1]].points.draws ++;
                 playerlist[this.players[1]].total.draws ++;
                 playerlist[this.players[1]].result = "draw";
-                console.log("("+this.id+") => The round was a draw");
+                console.log("("+this.id+") The round was a draw");
             }
 
             this.players.forEach(p => {
@@ -264,7 +264,7 @@ class Game {
                 io.to(playerlist[p].socketId).emit('msgFromServer', "New round!");
             });
 
-            console.log("("+this.id+") => A new round has been started!");
+            console.log("("+this.id+") A new round has been started!");
 
             updateJSON();
         }
