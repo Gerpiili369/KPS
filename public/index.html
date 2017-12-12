@@ -15,17 +15,13 @@
     </head>
     <body>
         <div id="login">
-            <input type="text" id="name">
+            <input type="text" class="form-control" id="name">
             <button type="button" class="btn btn-default" id="namebtn" >Submit</button>
             <h1 id="logindata">Enter username</h1>
         </div>
         <div class="row" id="topbar" hidden="true">
             <div class="col-xs-4 col-md-4">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-default" id="rockbtn">ROCK</button>
-                    <button type="button" class="btn btn-default" id="paperbtn">PAPER</button>
-                    <button type="button" class="btn btn-default" id="scissorsbtn">SCISSORS</button>
-                </div>
+                <h1 id="usertext">Username</h1>
             </div>
             <div class="col-xs-4 col-md-4">
                 <pre>Wins: <span class="badge" id="winBad">0</span> Losses: <span class="badge" id="lossBad">0</span> Draws: <span class="badge" id="drawBad">0</span></pre>
@@ -34,7 +30,24 @@
                 <h1 id="msg">Waiting for opponent...</h1>
             </div>
         </div>
-        <div class="row" id="resultarea" hidden="true">
+        <div class="row text-center" id="mainmenu" hidden="true">
+            <div class="col-xs-12 col-md-6">
+                <div class="btn-group-vertical">
+                    <button type="button" class="btn btn-default" id="playai">Play against AI</button>
+                    <button type="button" class="btn btn-default" id="playother">Play against other players</button>
+                    <button type="button" class="btn btn-default" id="playfriend">Play against friend</button>
+                    <input type="text" class="form-control" id="friendname">
+                </div>
+            </div>
+        </div>
+        <div class="row" id="choosebar" hidden="true">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default" id="rockbtn">ROCK</button>
+                <button type="button" class="btn btn-default" id="paperbtn">PAPER</button>
+                <button type="button" class="btn btn-default" id="scissorsbtn">SCISSORS</button>
+            </div>
+        </div>
+        <div class="row" id="gamearea" hidden="true">
             <div class="col-xs-4 col-md-4">
                 <div class="thumbnail">
                     <img id="playerpicture" alt="player" height="100"/>
@@ -57,19 +70,19 @@
                 </div>
             </div>
         </div>
-        <div id="hideatstart" hidden="true">
+        <div id="resultarea" hidden="true">
             <div class="row">
                 <div class="col-xs-3 col-md-3"></div>
                 <div class="col-xs-6 col-md-6">
                     <div class="row">
                         <div class="thumbnail">
-                            <img id="result" alt="result"/>
+                            <img id="resultimg" alt="result"/>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="progress">
+        <div class="progress" id="progress" hidden="true">
             <div id="winBar" class="progress-bar progress-bar-success progress-bar-striped active" style=""></div>
             <div id="drawBar" class="progress-bar progress-bar-warning progress-bar-striped active" style=""></div>
             <div id="lossBar" class="progress-bar progress-bar-danger progress-bar-striped active" style=""></div>
