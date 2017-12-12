@@ -52,7 +52,10 @@ function initialize() {
 
         addClickEmit("playai",socket,'setMode',"ai");
         addClickEmit("playother",socket,'setMode',"other");
-        addClickEmit("playfriend",socket,'setMode',"friend");
+        document.getElementById("playfriend").addEventListener("click", () => {
+            socket.emit('setMode', "friend", document.getElementById("friendname").value);
+        });
+
         addClickEmit("rockbtn",socket,'choose',"rock");
         addClickEmit("paperbtn",socket,'choose',"paper");
         addClickEmit("scissorsbtn",socket,'choose',"scissors")

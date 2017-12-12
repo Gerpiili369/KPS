@@ -87,7 +87,7 @@ io.on('connection', socket => {
         playerlist[socket.name].socketId = socket.id;
         socket.emit('loginSucc', playerlist[socket.name]);
 
-        socket.on('setMode', data => {
+        socket.on('setMode', (data,extra) => {
             console.log("["+socket.name+"] set mode to \""+data+"\"");
             switch (data) {
                 case "ai":
@@ -97,7 +97,7 @@ io.on('connection', socket => {
                     addOther(socket.name);
                     break;
                 case "friend":
-                    addFriend(socket,"f1");
+                    addFriend(socket,extra);
                     break;
             }
         });
