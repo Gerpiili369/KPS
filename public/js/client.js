@@ -21,11 +21,11 @@ function initialize() {
     });
 
     socket.on('startGame', () => {
-        updateVisibility(["choosebar","resultarea"],["mainmenu"]);
+        updateVisibility(["choosebar","gamearea"],["mainmenu"]);
     });
 
     socket.on('toMainMenu', () => {
-        updateVisibility(["mainmenu"],["choosebar","resultarea"]);
+        updateVisibility(["mainmenu"],["choosebar","gamearea","resultarea","progress"]);
     });
 
     socket.on('msgFromServer', (data) => {
@@ -43,6 +43,7 @@ function initialize() {
         document.getElementById("lossBar").style = "width: "+(player.points.losses/player.games*100)+"%";
 
         updateVisuals(theme);
+        updateVisibility(["resultarea","progress"],[]);
     });
 
     function addSomeListeners(socket) {
@@ -98,12 +99,8 @@ function initialize() {
     function updateVisuals(theme) {
         document.getElementById("playerpicture").src = "img/"+theme+"/"+mem.player.selection+".png";
         document.getElementById("opponentpicture").src = "img/"+theme+"/"+mem.opponent+".png";
-        document.getElementById("result").src = "img/"+theme+"/"+mem.player.result+".png";
+        document.getElementById("resultimg").src = "img/"+theme+"/"+mem.player.result+".png";
         document.getElementById("vs").src = "img/"+theme+"/vs.png";
         document.getElementById("stylesheet").href = "css/"+theme+".css";
-
-        if (mem.player.result != null) {
-            document.getElementById("hideatstart").hidden = false;
-        }
     }
 }
