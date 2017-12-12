@@ -1,82 +1,106 @@
-let theme = "defeault";
-let mem = {player: {selection: null, result: null}, opponent: null};
-
 document.addEventListener("DOMContentLoaded", initialize);
 
 function initialize() {
+    let theme = "defeault";
+    let mem = {player: {selection: null, result: null}, opponent: null};
     let socket = io();
 
     updateVisuals(theme);
+    addSomeListeners(socket);
 
-    document.getElementById("namebtn").addEventListener("click", () => {
-        socket.emit('setName', document.getElementById("name").value);
-    })
-    document.getElementById("rockbtn").addEventListener("click", () => {
-        socket.emit('choose', "rock");
-    });
-    document.getElementById("paperbtn").addEventListener("click", () => {
-        socket.emit('choose', "paper");
-    });
-    document.getElementById("scissorsbtn").addEventListener("click", () => {
-        socket.emit('choose', "scissors");
-    });
-    document.getElementById('classicactivate').addEventListener("click", () => {
-        theme = "defeault";
-        updateVisuals(theme);
-    });
-    document.getElementById('horroractivate').addEventListener("click", () => {
-        theme = "horror";
-        updateVisuals(theme);
-    });
-    document.getElementById('fuckrullaactivate').addEventListener("click", () => {
-        theme = "fuckrulla";
-        updateVisuals(theme);
-    });
-    document.getElementById('handactive').addEventListener("click", ()=> {
-        theme = "hand";
-        updateVisuals(theme);
-    });
+    socket.on('loginSucc', (player) => {
+        htmlEdit("usertext", player.username);
+        updateTotal(player.total);
 
-    socket.on('loginSucc', (data) => {
-        document.getElementById("logindata").innerHTML = data;
-
-        document.getElementById("login").hidden = true;
-        document.getElementById("topbar").hidden = false;
-        document.getElementById("resultarea").hidden = false;
+        updateVisibility(["mainmenu","topbar"],["login"])
     });
 
     socket.on('loginFail', (data) => {
-        document.getElementById("logindata").innerHTML = data;
+        htmlEdit("logindata",data);
+    });
+
+    socket.on('startGame', () => {
+        updateVisibility(["choosebar","gamearea"],["mainmenu"]);
+    });
+
+    socket.on('toMainMenu', () => {
+        updateVisibility(["mainmenu"],["choosebar","gamearea","resultarea","progress"]);
     });
 
     socket.on('msgFromServer', (data) => {
-        document.getElementById("msg").innerHTML = data;
-    })
+        htmlEdit("msg",data);
+    });
 
     socket.on('result', (player, opponent) => {
         mem.player = player;
         mem.opponent = opponent;
 
-        document.getElementById("winBad").innerHTML = player.total.wins;
-        document.getElementById("drawBad").innerHTML = player.total.draws;
-        document.getElementById("lossBad").innerHTML =  player.total.losses;
+        updateTotal(player.total);
 
         document.getElementById("winBar").style = "width: "+(player.points.wins/player.games*100)+"%";
         document.getElementById("drawBar").style = "width: "+(player.points.draws/player.games*100)+"%";
         document.getElementById("lossBar").style = "width: "+(player.points.losses/player.games*100)+"%";
 
         updateVisuals(theme);
+        updateVisibility(["resultarea","progress"],[]);
     });
-}
 
-function updateVisuals(theme) {
-    document.getElementById("playerpicture").src = "img/"+theme+"/"+mem.player.selection+".png";
-    document.getElementById("opponentpicture").src = "img/"+theme+"/"+mem.opponent+".png";
-    document.getElementById("result").src = "img/"+theme+"/"+mem.player.result+".png";
-    document.getElementById("vs").src = "img/"+theme+"/vs.png";
-    document.getElementById("stylesheet").href = "css/"+theme+".css";
+    function addSomeListeners(socket) {
+        document.getElementById("namebtn").addEventListener("click", () => {
+            socket.emit('setName',document.getElementById("name").value);
+        });
 
-    if (mem.player.result != null) {
-        document.getElementById("hideatstart").hidden = false;
+        addClickEmit("playai",socket,'setMode',"ai");
+        addClickEmit("playother",socket,'setMode',"other");
+        document.getElementById("playfriend").addEventListener("click", () => {
+            socket.emit('setMode', "friend", document.getElementById("friendname").value);
+        });
+
+        addClickEmit("rockbtn",socket,'choose',"rock");
+        addClickEmit("paperbtn",socket,'choose',"paper");
+        addClickEmit("scissorsbtn",socket,'choose',"scissors")
+
+        addClickTheme('classicactivate',"defeault");
+        addClickTheme('horroractivate',"horror");
+        addClickTheme('fuckrullaactivate',"fuckrulla");
+        addClickTheme('handactivate',"hand");
+    }
+
+    function htmlEdit(id,data) {
+        document.getElementById(id).innerHTML = data;
+    }
+
+    function addClickEmit(id,socket,eventName,data) {
+        document.getElementById(id).addEventListener("click", () => socket.emit(eventName, data));
+    }
+
+    function addClickTheme(id,data) {
+        document.getElementById(id).addEventListener("click", () => {
+            theme = data;
+            updateVisuals(theme);
+        });
+    }
+
+    function updateVisibility(nothidden,hidden) {
+            nothidden.forEach(e => {
+                document.getElementById(e).hidden = false;
+            });
+            hidden.forEach(e => {
+                document.getElementById(e).hidden = true;
+            });
+    }
+
+    function updateTotal(total) {
+        document.getElementById("winBad").innerHTML = total.wins;
+        document.getElementById("drawBad").innerHTML = total.draws;
+        document.getElementById("lossBad").innerHTML = total.losses;
+    }
+
+    function updateVisuals(theme) {
+        document.getElementById("playerpicture").src = "img/"+theme+"/"+mem.player.selection+".png";
+        document.getElementById("opponentpicture").src = "img/"+theme+"/"+mem.opponent+".png";
+        document.getElementById("resultimg").src = "img/"+theme+"/"+mem.player.result+".png";
+        document.getElementById("vs").src = "img/"+theme+"/vs.png";
+        document.getElementById("stylesheet").href = "css/"+theme+".css";
     }
 }
