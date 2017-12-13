@@ -43,8 +43,8 @@ playerlist.computer = {
     }
 };
 
-if (fs.existsSync('serverData/playerlist.json')) {
-    fs.readFile('serverData/playerlist.json', 'utf-8', (err, data) => {
+if (fs.existsSync(path.join('serverData','playerlist.json'))) {
+    fs.readFile(path.join('serverData','playerlist.json'), 'utf-8', (err, data) => {
         playerlist = JSON.parse(data);
 
         Object.keys(playerlist).forEach(username => {
@@ -219,7 +219,7 @@ function addFriend(socket,friend) {
 }
 
 function updateJSON() {
-    fs.writeFile('serverData/playerlist.json', JSON.stringify(playerlist), err => {if (err) console.log(err)});
+    fs.writeFile(path.join('serverData','playerlist.json'), JSON.stringify(playerlist), err => {if (err) console.log(err)});
 }
 
 class Game {
