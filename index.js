@@ -5,11 +5,17 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 
-const port = process.env.PORT || 3000;
-const host = '127.0.0.1';
-
 const io = require('socket.io')(http);
 const fs = require('fs');
+
+var address = {port: 3000, host: '127.0.0.1'}
+
+if (fs.existsSync('./address.json')) {
+    address = require('./address.json');
+}
+
+const port = process.env.PORT || address.port;
+const host = address.host;
 
 app.use('/', express.static(path.join(__dirname,'public')));
 
