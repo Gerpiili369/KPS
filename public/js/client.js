@@ -9,9 +9,12 @@ function initialize() {
     addSomeListeners(socket);
 
     socket.on('loginSucc', (player) => {
+        theme = player.theme;
+
         htmlEdit("usertext", player.username);
         updateTotal(player.total);
 
+        updateVisuals(theme);
         updateVisibility(["mainmenu","topbar"],["login"])
     });
 
@@ -77,6 +80,7 @@ function initialize() {
 
     function addClickTheme(id,data) {
         document.getElementById(id).addEventListener("click", () => {
+            socket.emit('setTheme', data);
             theme = data;
             updateVisuals(theme);
         });

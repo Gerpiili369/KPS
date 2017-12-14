@@ -61,6 +61,7 @@ io.on('connection', socket => {
         } else if (playerlist[username] == undefined) {
             playerlist[username] = {
                 username: username,
+                theme: "defeault",
                 selection: null,
                 result: null,
                 socketId: null,
@@ -114,6 +115,10 @@ io.on('connection', socket => {
                 gameList[[playerlist[socket.name].gameId]].checkGame();
             }
         });
+
+        socket.on('setTheme', data => {
+            playerlist[socket.name].theme = data;
+        })
 
         socket.on('disconnect', () => {
             if (playerlist[socket.name].gameId != null) {
