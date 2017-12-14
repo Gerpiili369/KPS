@@ -23,3 +23,9 @@ pre{
     font-family: eater;
     background-color: #060606;
 }
+
+#friendname, #name{
+    color: #750000;
+    font-family: eater;
+    background-color: #060606;
+}

@@ -34,3 +34,10 @@ pre{
     border-color: aqua;
     color: aqua;
 }
+
+#friendname, #name{
+    background-color: green;
+    font-family: impact;
+    border-color: aqua;
+    color: aqua;
+}
