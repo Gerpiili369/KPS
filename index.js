@@ -5,11 +5,17 @@ const express = require('express');
 const app = express();
 const http = require('http').Server(app);
 
-const port = process.env.PORT || 3000;
-const host = '127.0.0.1';
-
 const io = require('socket.io')(http);
 const fs = require('fs');
+
+var address = {port: 3000, host: '127.0.0.1'}
+
+if (fs.existsSync('./address.json')) {
+    address = require('./address.json');
+}
+
+const port = process.env.PORT || address.port;
+const host = address.host;
 
 app.use('/', express.static(path.join(__dirname,'public')));
 
@@ -37,8 +43,8 @@ playerlist.computer = {
     }
 };
 
-if (fs.existsSync('serverData/playerlist.json')) {
-    fs.readFile('serverData/playerlist.json', 'utf-8', (err, data) => {
+if (fs.existsSync(path.join('serverData','playerlist.json'))) {
+    fs.readFile(path.join('serverData','playerlist.json'), 'utf-8', (err, data) => {
         playerlist = JSON.parse(data);
 
         Object.keys(playerlist).forEach(username => {
@@ -55,6 +61,7 @@ io.on('connection', socket => {
         } else if (playerlist[username] == undefined) {
             playerlist[username] = {
                 username: username,
+                theme: "defeault",
                 selection: null,
                 result: null,
                 socketId: null,
@@ -88,7 +95,7 @@ io.on('connection', socket => {
         socket.emit('loginSucc', playerlist[socket.name]);
 
         socket.on('setMode', (data,extra) => {
-            console.log("["+socket.name+"] set mode to \""+data+"\"");
+            console.log("(M) ["+socket.name+"] set mode to \""+data+"\"");
             switch (data) {
                 case "ai":
                     addAi(socket)
@@ -108,6 +115,10 @@ io.on('connection', socket => {
                 gameList[[playerlist[socket.name].gameId]].checkGame();
             }
         });
+
+        socket.on('setTheme', data => {
+            playerlist[socket.name].theme = data;
+        })
 
         socket.on('disconnect', () => {
             if (playerlist[socket.name].gameId != null) {
@@ -131,9 +142,9 @@ function addAi(socket) {
     playerlist[socket.name].gameId = newGameId;
 
     io.to(playerlist[socket.name].socketId).emit('msgFromServer', "Game versus computer started");
-    io.to(playerlist[socket.name].socketId).emit('startGame');
+    io.to(playerlist[socket.name].socketId).emit('startGame', "Computer");
 
-    console.log("("+newGameId+") => "+socket.name+" started AI game");
+    console.log("("+newGameId+") ["+socket.name+"] started AI game");
 }
 
 function addOther(username) {
@@ -151,11 +162,21 @@ function addOther(username) {
         gameList[newGameId].players.forEach(p => {
             playerlist[p].gameId = newGameId;
 
+            let otherP;
+            switch (gameList[newGameId].players.indexOf(p)) {
+                case 0:
+                    otherP = 1;
+                    break;
+                case 1:
+                    otherP = 0;
+                    break;
+            }
+
             io.to(playerlist[p].socketId).emit('msgFromServer', "Opponent found!");
-            io.to(playerlist[p].socketId).emit('startGame');
+            io.to(playerlist[p].socketId).emit('startGame', gameList[newGameId].players[otherP]);
         });
 
-        console.log("("+newGameId+") => Game crated with "+gameList[newGameId].players);
+        console.log("("+newGameId+") Game crated with "+gameList[newGameId].players);
     }
 }
 
@@ -173,8 +194,18 @@ function addFriend(socket,friend) {
                     gameList[newGameId].players.forEach(p => {
                         playerlist[p].gameId = newGameId;
 
+                        let otherP;
+                        switch (gameList[newGameId].players.indexOf(p)) {
+                            case 0:
+                                otherP = 1;
+                                break;
+                            case 1:
+                                otherP = 0;
+                                break;
+                        }
+
                         io.to(playerlist[p].socketId).emit('msgFromServer', "Friend found!");
-                        io.to(playerlist[p].socketId).emit('startGame');
+                        io.to(playerlist[p].socketId).emit('startGame', gameList[newGameId].players[otherP]);
                     });
 
                     console.log("("+newGameId+") Friendly match with: "+gameList[newGameId].players);
@@ -193,7 +224,7 @@ function addFriend(socket,friend) {
 }
 
 function updateJSON() {
-    fs.writeFile('serverData/playerlist.json', JSON.stringify(playerlist), err => {if (err) console.log(err)});
+    fs.writeFile(path.join('serverData','playerlist.json'), JSON.stringify(playerlist), err => {if (err) console.log(err)});
 }
 
 class Game {
@@ -241,7 +272,7 @@ class Game {
                 playerlist[this.players[1]].points.draws ++;
                 playerlist[this.players[1]].total.draws ++;
                 playerlist[this.players[1]].result = "draw";
-                console.log("("+this.id+") => The round was a draw");
+                console.log("("+this.id+") The round was a draw");
             }
 
             this.players.forEach(p => {
@@ -264,7 +295,7 @@ class Game {
                 io.to(playerlist[p].socketId).emit('msgFromServer', "New round!");
             });
 
-            console.log("("+this.id+") => A new round has been started!");
+            console.log("("+this.id+") A new round has been started!");
 
             updateJSON();
         }

@@ -33,3 +33,10 @@ pre{
     border-color: black;
     color: black;
 }
+
+#friendname, #name{
+    background-color: darkgrey;
+    font-family: courier;
+    border-color: black;
+    color: black;
+}
