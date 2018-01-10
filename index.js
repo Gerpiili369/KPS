@@ -8,7 +8,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const fs = require('fs');
 
-const address = {port: 3000, host: '127.0.0.1', location: ""}
+var address = {port: 3000, host: '127.0.0.1', location: ""}
 
 if (fs.existsSync('./address.json')) {
     address = require('./address.json');
