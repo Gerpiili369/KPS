@@ -1,9 +1,7 @@
-document.addEventListener("DOMContentLoaded", initialize);
-
-function initialize() {
+function initialize(sockData) {
     let theme = "defeault";
     let mem = {player: {selection: null, result: null}, opponent: null};
-    let socket = io();
+    let socket = io(sockData.url, sockData.options);
 
     updateVisuals(theme);
     addSomeListeners(socket);
