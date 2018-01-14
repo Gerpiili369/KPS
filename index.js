@@ -8,7 +8,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const fs = require('fs');
 
-var address = {port: 3000, host: '127.0.0.1'}
+var address = {port: 3000, host: '127.0.0.1', location: ""}
 
 if (fs.existsSync('./address.json')) {
     address = require('./address.json');
@@ -16,8 +16,9 @@ if (fs.existsSync('./address.json')) {
 
 const port = process.env.PORT || address.port;
 const host = address.host;
+const location = address.location;
 
-app.use('/', express.static(path.join(__dirname,'public')));
+app.use(`/${location}`, express.static(path.join(__dirname,'public')));
 
 let que = [];
 var playerlist = {};

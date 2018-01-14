@@ -2,3 +2,4 @@
 /serverData/
 package-lock.json
 address.json
+/public/sockSrc.json
