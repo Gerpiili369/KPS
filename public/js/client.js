@@ -9,6 +9,7 @@ function initialize(sockData) {
     socket.on('loginSucc', (player) => {
         theme = player.theme;
 
+        htmlEdit("msg",'Choose mode');
         htmlEdit("usertext", player.username);
         updateTotal(player.total);
 
@@ -17,7 +18,7 @@ function initialize(sockData) {
     });
 
     socket.on('loginFail', (data) => {
-        htmlEdit("logindata",data);
+        htmlEdit("msg",data);
     });
 
     socket.on('startGame', (data) => {
