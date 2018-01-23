@@ -41,6 +41,17 @@ a{
     left: 10px;
 }
 
+.bottomright{
+    margin: 0px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}
+
+#msg{
+    text-align: right;
+}
+
 #choosebar{
     margin: 5px;
 }
