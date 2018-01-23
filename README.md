@@ -1,5 +1,6 @@
 # Rock, Paper, Scissors
 
+    Now hosted at http://plssave.help!
 ## How to use
 - Install Node.js
 - Open install.bat
