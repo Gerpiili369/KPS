@@ -30,6 +30,11 @@ a{
     font-size: 28px;
 }
 
+.progress{
+    margin-bottom: 70px;
+    margin-top: 10px;
+}
+
 #choosebar{
     margin: 5px;
 }
