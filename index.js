@@ -331,26 +331,20 @@ class Game {
     }
 
     disconnect(username) {
-        if (username == this.players[0]) {
-            io.to(playerlist[this.players[1]].socketId).emit('msgFromServer', "Opponent left");
-            console.log("("+this.id+") ["+this.players[0]+"] left");
-        } else if (username == this.players[1]) {
-            io.to(playerlist[this.players[0]].socketId).emit('msgFromServer', "Opponent left");
-            console.log("("+this.id+") ["+this.players[1]+"] left");
-        }
+            console.log("("+this.id+") ["+this.players[this.players.indexOf(username)]+"] left");
 
-        this.resetGame();
+        this.resetGame("Opponent left");
         updateJSON();
     }
 
-    resetGame() {
+    resetGame(reason) {
         this.players.forEach(p => {
             playerlist[p].games = 0;
             playerlist[p].points = {wins: 0, losses: 0, draws: 0};
             playerlist[p].gameId = null;
             this.players[p] = null;
 
-            io.to(playerlist[p].socketId).emit('toMainMenu');
+            io.to(playerlist[p].socketId).emit('toMainMenu',reason);
         });
     }
 }

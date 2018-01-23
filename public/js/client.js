@@ -26,7 +26,8 @@ function initialize(sockData) {
         updateVisibility(["choosebar","gamearea"],["mainmenu"]);
     });
 
-    socket.on('toMainMenu', () => {
+    socket.on('toMainMenu', (data) => {
+        htmlEdit("msg",data);
         updateVisibility(["mainmenu"],["choosebar","gamearea","resultarea","progress"]);
     });
 
