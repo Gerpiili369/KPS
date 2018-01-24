@@ -9,6 +9,7 @@ function initialize(sockData) {
     socket.on('loginSucc', (player) => {
         theme = player.theme;
 
+        htmlEdit("msg",'Choose mode');
         htmlEdit("usertext", player.username);
         updateTotal(player.total);
 
@@ -17,7 +18,7 @@ function initialize(sockData) {
     });
 
     socket.on('loginFail', (data) => {
-        htmlEdit("logindata",data);
+        htmlEdit("msg",data);
     });
 
     socket.on('startGame', (data) => {
@@ -25,7 +26,8 @@ function initialize(sockData) {
         updateVisibility(["choosebar","gamearea"],["mainmenu"]);
     });
 
-    socket.on('toMainMenu', () => {
+    socket.on('toMainMenu', (data) => {
+        htmlEdit("msg",data);
         updateVisibility(["mainmenu"],["choosebar","gamearea","resultarea","progress"]);
     });
 
