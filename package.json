@@ -1,13 +1,13 @@
 {
     "name": "KPS",
-    "version": "1.0.0",
-    "description": "",
+    "version": "2.2.0",
+    "description": "Rock, paper, scissors online game",
     "main": "index.js",
     "scripts": {
         "test": "test/test.sh"
     },
-    "author": "",
-    "license": "ISC",
+    "author": "Gerpiili369",
+    "license": "",
     "dependencies": {
         "express": "^4.16.2",
         "socket.io": "^2.0.4"
