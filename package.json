@@ -4,12 +4,15 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "test/test.sh"
+        "test": "eslint ."
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
         "express": "^4.16.2",
         "socket.io": "^2.0.4"
+    },
+    "devDependencies": {
+        "eslint": "^5.16.0"
     }
 }
