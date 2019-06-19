@@ -30,6 +30,7 @@ const
 app.use(`/${ location }`, express.static(path.join(__dirname, 'public')));
 
 const
+    choices = ['rock', 'paper', 'scissors'],
     que = [],
     gameList = [];
 let playerlist = {};
@@ -144,7 +145,13 @@ function addAi(socket) {
 
     const newGameId = gameList.length - 1;
 
-    gameList[newGameId] = new Ai(socket, newGameId);
+    gameList[newGameId] = new Game(socket.name, 'computer', newGameId);
+
+    socket.on('choose', data => {
+        playerlist.computer.selection = choices[Math.floor(Math.random() * choices.length)];
+        gameList[newGameId].choose(socket.id, data);
+        gameList[newGameId].checkGame();
+    });
 
     playerlist[socket.name].gameId = newGameId;
 
@@ -316,20 +323,6 @@ class Game {
 
             io.to(playerlist[player].socketId).emit('toMainMenu', reason);
         }
-    }
-}
-
-class Ai extends Game {
-    constructor(socket, id) {
-        super(socket.name, 'computer', id);
-
-        this.choices = ['rock', 'paper', 'scissors'];
-
-        socket.on('choose', data => {
-            playerlist.computer.selection = this.choices[Math.floor(Math.random() * this.choices.length)];
-            this.choose(socket.id, data);
-            this.checkGame();
-        });
     }
 }
 
