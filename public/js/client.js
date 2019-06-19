@@ -2,19 +2,20 @@ document.addEventListener('DOMContentLoaded', () => fetch('sockSrc.json')
     .then(res => res.json())
     .then(data => data, () => ({ url: '', options: { path: '/socket.io' } }))
     .then(sockData => {
-        sockpath = document.getElementById('socket');
-        sockpath.src = `${sockData.options.path}/socket.io.js`;
-        return new Promise(resolve => sockpath.onload = () => resolve(sockData));
+        const sockpath = document.getElementById('socket');
+        sockpath.src = `${ sockData.options.path }/socket.io.js`;
+        return new Promise(resolve => (sockpath.onload = () => resolve(sockData)));
     })
     .then(initialize)
-    .catch(console.log)
+    .catch(alert)
 );
 
 function initialize(sockData) {
-    let
-        theme = 'defeault',
+    const
         mem = { player: { selection: '', result: '' }, opponent: '' },
+        // eslint-disable-next-line no-undef
         socket = io(sockData.url, sockData.options);
+    let theme = 'defeault';
 
     updateVisuals(theme);
     addSomeListeners(socket);
@@ -27,7 +28,7 @@ function initialize(sockData) {
         updateTotal(player.total);
 
         updateVisuals(theme);
-        updateVisibility(['mainmenu','topbar'], ['login'])
+        updateVisibility(['mainmenu', 'topbar'], ['login']);
     });
 
     socket.on('loginFail', data => htmlEdit('msg', data));
@@ -50,31 +51,28 @@ function initialize(sockData) {
 
         updateTotal(player.total);
 
-        document.getElementById('winBar').style = `width: ${player.points.wins / player.games * 10}%`;
-        document.getElementById('drawBar').style = `width: ${player.points.draws / player.games * 10}%`;
-        document.getElementById('lossBar').style = `width: ${player.points.losses / player.games * 10}%`;
+        document.getElementById('winBar').style = `width: ${ player.points.wins / player.games * 10 }%`;
+        document.getElementById('drawBar').style = `width: ${ player.points.draws / player.games * 10 }%`;
+        document.getElementById('lossBar').style = `width: ${ player.points.losses / player.games * 10 }%`;
 
         updateVisuals(theme);
         updateVisibility(['resultarea', 'progress']);
     });
 
     function addSomeListeners(socket) {
-        document.getElementById('namebtn').addEventListener('click', () =>
-            socket.emit('setName', document.getElementById('name').value)
-        );
+        document.getElementById('namebtn').addEventListener('click', () => socket.emit('setName', document.getElementById('name').value));
 
         addClickEmit('playai', socket, 'setMode', 'ai');
         addClickEmit('playother', socket, 'setMode', 'other');
-        document.getElementById('playfriend').addEventListener('click', () =>
-            socket.emit('setMode', 'friend', document.getElementById('friendname').value)
+        document.getElementById('playfriend').addEventListener('click', () => socket.emit('setMode', 'friend', document.getElementById('friendname').value)
         );
 
         for (const choice of ['rock', 'paper', 'scissors'])
-            addClickEmit(choice + 'btn', socket, 'choose', choice);
+            addClickEmit(`${ choice }btn`, socket, 'choose', choice);
 
         addClickTheme('classicactivate', 'defeault');
         for (const theme of ['horror', 'fuckrulla', 'hand'])
-            addClickTheme(theme + 'activate', theme);
+            addClickTheme(`${ theme }activate`, theme);
     }
 
     function htmlEdit(id, data) {
@@ -82,7 +80,6 @@ function initialize(sockData) {
     }
 
     function addClickEmit(id, socket, eventName, data) {
-        console.log(id, socket, eventName, data);
         document.getElementById(id).addEventListener('click', () => socket.emit(eventName, data));
     }
 
