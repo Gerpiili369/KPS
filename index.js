@@ -172,38 +172,40 @@ function addOther(username) {
 }
 
 function addFriend(socket, friend) {
-    if (friend != socket.name) {
-        if (playerlist[friend]) {
-            if (playerlist[friend].socketId) {
-                if (!playerlist[friend].gameId) {
-                    gameList.push(gameList.length);
+    if (friend === socket.name)
+        socket.emit('msgFromServer', "You can't play against yourself");
+    else if (!playerlist[friend])
+        socket.emit('msgFromServer', "Friend doesn't exist");
+    else if (!playerlist[friend].socketId)
+        socket.emit('msgFromServer', "Friend offline");
+    else if (playerlist[friend].gameId)
+        socket.emit('msgFromServer', "Friend occupied");
+    else {
+        gameList.push(gameList.length);
 
-                    const newGameId = gameList.length - 1;
+        const newGameId = gameList.length - 1;
 
-                    gameList[newGameId] = new Game(socket.name, friend, newGameId);
+        gameList[newGameId] = new Game(socket.name, friend, newGameId);
 
-                    for (const player of gameList[newGameId].players) {
-                        playerlist[player].gameId = newGameId;
+        for (const player of gameList[newGameId].players) {
+            playerlist[player].gameId = newGameId;
 
-                        let otherP;
-                        switch (gameList[newGameId].players.indexOf(player)) {
-                            case 0:
-                                otherP = 1;
-                                break;
-                            case 1:
-                                otherP = 0;
-                                break;
-                        }
+            let otherP;
+            switch (gameList[newGameId].players.indexOf(player)) {
+                case 0:
+                    otherP = 1;
+                    break;
+                case 1:
+                    otherP = 0;
+                    break;
+            }
 
-                        io.to(playerlist[player].socketId).emit('msgFromServer', 'Friend found!');
-                        io.to(playerlist[player].socketId).emit('startGame', gameList[newGameId].players[otherP]);
-                    }
+            io.to(playerlist[player].socketId).emit('msgFromServer', 'Friend found!');
+            io.to(playerlist[player].socketId).emit('startGame', gameList[newGameId].players[otherP]);
+        }
 
-                    console.log(`(${ newGameId }) Friendly match with: ${ gameList[newGameId].players }`);
-                } else socket.emit('msgFromServer', "Friend occupied");
-            } else socket.emit('msgFromServer', "Friend offline");
-        } else socket.emit('msgFromServer', "Friend doesn't exist");
-    } else socket.emit('msgFromServer', "You can't play against yourself");
+        console.log(`(${ newGameId }) Friendly match with: ${ gameList[newGameId].players }`);
+    }
 }
 
 function updateJSON() {
@@ -223,10 +225,10 @@ class Game {
 
     choose(id, data) {
         for (const player of this.players) if (playerlist[player].socketId == id) {
-                playerlist[player].selection = data;
-                console.log(`(${ this.id }) [${ player }] chose ${ data }`);
-            } else io.to(playerlist[player].socketId).emit('msgFromServer', 'Ready');
-        }
+            playerlist[player].selection = data;
+            console.log(`(${ this.id }) [${ player }] chose ${ data }`);
+        } else io.to(playerlist[player].socketId).emit('msgFromServer', 'Ready');
+    }
 
     checkGame() {
         if (playerlist[this.players[0]].selection && playerlist[this.players[1]].selection) {
