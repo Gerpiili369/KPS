@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const
     path = require('path'),
@@ -9,23 +9,23 @@ const
     io = require('socket.io')(http),
     fs = require('fs'),
 
-    address = fs.existsSync('./address.json') ? require('./address.json') : {
-        port: 3000, host: '127.0.0.1', location: ''
-    },
+    address = fs.existsSync('./address.json') ?
+        require('./address.json') :
+        { port: 3000, host: '127.0.0.1', location: '' },
 
-    port = process.env.PORT || address.port,
+    port = address.port,
     host = address.host,
     location = address.location;
 
 app.use(`/${ location }`, express.static(path.join(__dirname, 'public')));
 
-let
+const
     que = [],
-    playerlist = {},
     gameList = [];
+let playerlist = {};
 
 playerlist.computer = {
-    // username: 'computer',
+    username: 'computer',
     selection: '',
     result: '',
     socketId: '69696969669696969',
@@ -57,7 +57,7 @@ if (fs.existsSync(path.join('serverData', 'playerlist.json'))) {
 
 io.on('connection', socket => {
     socket.on('setName', username => {
-        if (username === '') socket.emit('loginFail', "Username is empty!")
+        if (username === '') socket.emit('loginFail', "Username is empty!");
         else if (!playerlist[username]) {
             playerlist[username] = {
                 username,
@@ -81,8 +81,8 @@ io.on('connection', socket => {
             };
 
             login(username);
-        } else if (!playerlist[username].socketId) login(username);
-        else socket.emit('loginFail', 'User already logged in!');
+        } else if (playerlist[username].socketId) socket.emit('loginFail', 'User already logged in!');
+        else login(username);
     });
 
     function login(username) {
@@ -92,10 +92,10 @@ io.on('connection', socket => {
         socket.emit('loginSucc', playerlist[socket.name]);
 
         socket.on('setMode', (data, extra) => {
-            console.log(`(M) [${ socket.name }] set mode to \"${ data }\"`);
+            console.log(`(M) [${ socket.name }] set mode to "${ data }"`);
             switch (data) {
                 case "ai":
-                    addAi(socket)
+                    addAi(socket);
                     break;
                 case "other":
                     addOther(socket.name);
@@ -103,6 +103,7 @@ io.on('connection', socket => {
                 case "friend":
                     addFriend(socket, extra);
                     break;
+                default:
             }
         });
 
@@ -113,7 +114,7 @@ io.on('connection', socket => {
             }
         });
 
-        socket.on('setTheme', data => playerlist[socket.name].theme = data);
+        socket.on('setTheme', data => (playerlist[socket.name].theme = data));
 
         socket.on('disconnect', () => {
             if (playerlist[socket.name].gameId) gameList[[playerlist[socket.name].gameId]].disconnect(socket.name);
@@ -196,7 +197,7 @@ function addFriend(socket, friend) {
 
                         io.to(playerlist[player].socketId).emit('msgFromServer', 'Friend found!');
                         io.to(playerlist[player].socketId).emit('startGame', gameList[newGameId].players[otherP]);
-                    };
+                    }
 
                     console.log(`(${ newGameId }) Friendly match with: ${ gameList[newGameId].players }`);
                 } else socket.emit('msgFromServer', "Friend occupied");
@@ -221,13 +222,11 @@ class Game {
     }
 
     choose(id, data) {
-        for (const player of this.players) {
-            if (playerlist[player].socketId == id) {
+        for (const player of this.players) if (playerlist[player].socketId == id) {
                 playerlist[player].selection = data;
                 console.log(`(${ this.id }) [${ player }] chose ${ data }`);
             } else io.to(playerlist[player].socketId).emit('msgFromServer', 'Ready');
         }
-    }
 
     checkGame() {
         if (playerlist[this.players[0]].selection && playerlist[this.players[1]].selection) {
@@ -261,21 +260,22 @@ class Game {
                     playerlist[this.players[1]].result = 'draw';
                     console.log(`(${ this.id }) The round was a draw`);
                     break;
+                default:
             }
 
-            for (let player in this.players) {
-                let otherP = player == 0 ? 1 : 0;
+            for (const player in this.players) {
+                const otherP = player == 0 ? 1 : 0;
 
-                playerlist[this.players[player]].games++
+                playerlist[this.players[player]].games++;
                 io.to(playerlist[this.players[player]].socketId).emit('result', playerlist[this.players[player]], playerlist[this.players[otherP]].selection);
-            };
+            }
 
-            for (let player of this.players) {
+            for (const player of this.players) {
                 playerlist[player].selection = '';
                 playerlist[player].result = '';
 
                 io.to(playerlist[player].socketId).emit('msgFromServer', 'New round!');
-            };
+            }
 
             console.log(`(${ this.id }) A new round has been started!`);
 
@@ -284,25 +284,24 @@ class Game {
     }
 
     decider(p1, p2) {
-        let result;
-        if (p1 === 'rock') {
-            if (p2 === 'rock') result = 'draw';
-            else if (p2 === 'paper') result = 'p2';
-            else result = 'p1';
-        } else if (p1 === 'paper') {
-            if (p2 === 'rock') result = 'p1';
-            else if (p2 === 'paper') result = 'draw';
-            else result = 'p2';
-        } else {
-            if (p2 === 'rock') result = 'p2';
-            else if (p2 === 'paper') result = 'p1';
-            else result = 'draw';
+        let result = 'draw';
+        if (p1 !== p2) switch (p1) {
+            case 'rock':
+                result = (p2 === 'scissors') ? 'p1' : 'p2';
+                break;
+            case 'paper':
+                result = (p2 === 'rock') ? 'p1' : 'p2';
+                break;
+            case 'scissors':
+                result = (p2 === 'paper') ? 'p1' : 'p2';
+                break;
+            default:
         }
         return result;
     }
 
     disconnect(username) {
-        console.log("("+this.id+") ["+this.players[this.players.indexOf(username)]+"] left");
+        console.log(`(${ this.id }) [${ this.players[this.players.indexOf(username)] }] left`);
 
         this.resetGame("Opponent left");
         updateJSON();
@@ -322,14 +321,13 @@ class Game {
 
 class Ai extends Game {
     constructor(socket, id) {
-        super(socket, undefined, id);
+        super(socket.name, 'computer', id);
 
-        this.players = [socket.name, 'computer'];
         this.choices = ['rock', 'paper', 'scissors'];
 
         socket.on('choose', data => {
             playerlist.computer.selection = this.choices[Math.floor(Math.random() * this.choices.length)];
-            this.choose(socket.id, data)
+            this.choose(socket.id, data);
             this.checkGame();
         });
     }
