@@ -1,6 +1,16 @@
 'use strict';
 
 const
+    { format, createLogger, transports } = require('winston'),
+    logger = createLogger({
+        format: format.combine(
+            format.timestamp(),
+            format.colorize(),
+            format.errors({ stack: true }),
+            format.printf(info => `${ info.timestamp } ${ info.level }: ${ info.message }`),
+        ),
+        transports: [new transports.Console()],
+    }),
     path = require('path'),
     express = require('express'),
     app = express(),
@@ -46,12 +56,16 @@ playerlist.computer = {
 
 if (fs.existsSync(path.join('serverData', 'playerlist.json'))) {
     fs.readFile(path.join('serverData', 'playerlist.json'), 'utf-8', (err, data) => {
-        playerlist = JSON.parse(data);
+        if (err) {
+            logger.error(err);
+        } else {
+            playerlist = JSON.parse(data);
 
-        Object.keys(playerlist).forEach(username => {
-            playerlist[username].socketId = '';
-            playerlist[username].gameId = NaN;
-        });
+            Object.keys(playerlist).forEach(username => {
+                playerlist[username].socketId = '';
+                playerlist[username].gameId = NaN;
+            });
+        }
     });
 }
 
@@ -92,7 +106,7 @@ io.on('connection', socket => {
         socket.emit('loginSucc', playerlist[socket.name]);
 
         socket.on('setMode', (data, extra) => {
-            console.log(`(M) [${ socket.name }] set mode to "${ data }"`);
+            logger.info(`(M) [${ socket.name }] set mode to "${ data }"`);
             switch (data) {
                 case "ai":
                     addAi(socket);
@@ -137,7 +151,7 @@ function addAi(socket) {
     io.to(playerlist[socket.name].socketId).emit('msgFromServer', 'Game versus computer started');
     io.to(playerlist[socket.name].socketId).emit('startGame', 'Computer');
 
-    console.log(`(${ newGameId }) [${ socket.name }] started AI game`);
+    logger.info(`(${ newGameId }) [${ socket.name }] started AI game`);
 }
 
 function addOther(username) {
@@ -159,7 +173,7 @@ function addOther(username) {
             io.to(playerlist[player].socketId).emit('startGame', gameList[newGameId].players[otherP]);
         }
 
-        console.log(`(${ newGameId }) Game crated with ${ gameList[newGameId].players }`);
+        logger.info(`(${ newGameId }) Game crated with ${ gameList[newGameId].players }`);
     }
 }
 
@@ -188,7 +202,7 @@ function addFriend(socket, friend) {
             io.to(playerlist[player].socketId).emit('startGame', gameList[newGameId].players[otherP]);
         }
 
-        console.log(`(${ newGameId }) Friendly match with: ${ gameList[newGameId].players }`);
+        logger.info(`(${ newGameId }) Friendly match with: ${ gameList[newGameId].players }`);
     }
 }
 
@@ -197,7 +211,7 @@ function updateJSON() {
         path.join('serverData', 'playerlist.json'),
         JSON.stringify(playerlist, null, 4),
         err => {
-            if (err) console.log(err);
+            if (err) logger.info(err);
         });
 }
 
@@ -210,7 +224,7 @@ class Game {
     choose(id, data) {
         for (const player of this.players) if (playerlist[player].socketId == id) {
             playerlist[player].selection = data;
-            console.log(`(${ this.id }) [${ player }] chose ${ data }`);
+            logger.info(`(${ this.id }) [${ player }] chose ${ data }`);
         } else io.to(playerlist[player].socketId).emit('msgFromServer', 'Ready');
     }
 
@@ -226,7 +240,7 @@ class Game {
                     playerlist[this.players[1]].points.losses++;
                     playerlist[this.players[1]].total.losses++;
                     playerlist[this.players[1]].result = 'defeat';
-                    console.log(`(${ this.id }) [${ this.players[0] }] has won the round`);
+                    logger.info(`(${ this.id }) [${ this.players[0] }] has won the round`);
                     break;
                 case 'p2':
                     playerlist[this.players[0]].points.losses++;
@@ -235,7 +249,7 @@ class Game {
                     playerlist[this.players[1]].points.wins++;
                     playerlist[this.players[1]].total.wins++;
                     playerlist[this.players[1]].result = 'win';
-                    console.log(`(${ this.id }) [${ this.players[1] }] has won the round`);
+                    logger.info(`(${ this.id }) [${ this.players[1] }] has won the round`);
                     break;
                 case 'draw':
                     playerlist[this.players[0]].points.draws++;
@@ -244,7 +258,7 @@ class Game {
                     playerlist[this.players[1]].points.draws++;
                     playerlist[this.players[1]].total.draws++;
                     playerlist[this.players[1]].result = 'draw';
-                    console.log(`(${ this.id }) The round was a draw`);
+                    logger.info(`(${ this.id }) The round was a draw`);
                     break;
                 default:
             }
@@ -263,7 +277,7 @@ class Game {
                 io.to(playerlist[player].socketId).emit('msgFromServer', 'New round!');
             }
 
-            console.log(`(${ this.id }) A new round has been started!`);
+            logger.info(`(${ this.id }) A new round has been started!`);
 
             updateJSON();
         }
@@ -287,7 +301,7 @@ class Game {
     }
 
     disconnect(username) {
-        console.log(`(${ this.id }) [${ this.players[this.players.indexOf(username)] }] left`);
+        logger.info(`(${ this.id }) [${ this.players[this.players.indexOf(username)] }] left`);
 
         this.resetGame("Opponent left");
         updateJSON();
@@ -319,4 +333,4 @@ class Ai extends Game {
     }
 }
 
-http.listen(port, host, () => console.log(`Server ${ host } on port ${ port }.`));
+http.listen(port, host, () => logger.info(`Server ${ host } on port ${ port }.`));
