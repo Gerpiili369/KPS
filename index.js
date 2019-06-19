@@ -153,15 +153,7 @@ function addOther(username) {
         for (const player of gameList[newGameId].players) {
             playerlist[player].gameId = newGameId;
 
-            let otherP;
-            switch (gameList[newGameId].players.indexOf(player)) {
-                case 0:
-                    otherP = 1;
-                    break;
-                case 1:
-                    otherP = 0;
-                    break;
-            }
+            const otherP = gameList[newGameId].players.indexOf(player) == 0 ? 1 : 0;
 
             io.to(playerlist[player].socketId).emit('msgFromServer', 'Opponent found!');
             io.to(playerlist[player].socketId).emit('startGame', gameList[newGameId].players[otherP]);
@@ -190,15 +182,7 @@ function addFriend(socket, friend) {
         for (const player of gameList[newGameId].players) {
             playerlist[player].gameId = newGameId;
 
-            let otherP;
-            switch (gameList[newGameId].players.indexOf(player)) {
-                case 0:
-                    otherP = 1;
-                    break;
-                case 1:
-                    otherP = 0;
-                    break;
-            }
+            const otherP = gameList[newGameId].players.indexOf(player) == 0 ? 1 : 0;
 
             io.to(playerlist[player].socketId).emit('msgFromServer', 'Friend found!');
             io.to(playerlist[player].socketId).emit('startGame', gameList[newGameId].players[otherP]);
