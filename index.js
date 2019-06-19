@@ -238,7 +238,7 @@ class Game {
     checkGame() {
         if (playerlist[this.players[0]].selection && playerlist[this.players[1]].selection) {
             this.result = this.decider(playerlist[this.players[0]].selection, playerlist[this.players[1]].selection);
-            
+
             switch (this.result) {
                 case 'p1':
                     playerlist[this.players[0]].points.wins++;
